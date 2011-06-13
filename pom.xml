@@ -4,6 +4,7 @@
 	<groupId>org.dk</groupId>
 	<artifactId>code.base</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<name>Code Base</name>
 
 	<properties>
 		<org.springframework-version>3.0.5.RELEASE</org.springframework-version>
