@@ -3,9 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="car" class="springframework.context.model.car.Car">
+	<bean id="car" class="model.car.Car">
 		<constructor-arg ref="engine" />
 	</bean>
-	<bean id="engine" class="springframework.context.model.car.Engine">
+	<bean id="engine" class="model.car.Engine">
 	</bean>
 </beans>

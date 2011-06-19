@@ -1,4 +1,7 @@
-package springframework.context.model.car;
+package spring.context;
+
+import model.car.Car;
+import model.car.Engine;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

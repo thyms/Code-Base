@@ -1,4 +1,4 @@
-package springframework.context.model.car;
+package model.car;
 
 public class Car {
 	private Engine engine;
