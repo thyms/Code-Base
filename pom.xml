@@ -69,12 +69,15 @@
 	</build>
 
 	<dependencies>
+		<!-- Groovy -->
 		<dependency>
 			<groupId>org.spockframework</groupId>
 			<artifactId>spock-core</artifactId>
 			<version>0.5-groovy-1.8</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -89,6 +92,13 @@
 			<groupId>org.springframework.javaconfig</groupId>
 			<artifactId>spring-javaconfig</artifactId>
 			<version>1.0.0.m3</version>
+		</dependency>
+
+		<!-- Database -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.3.156</version>
 		</dependency>
 	</dependencies>
 </project>
