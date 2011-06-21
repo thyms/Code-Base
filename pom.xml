@@ -7,7 +7,24 @@
 	<name>Code Base</name>
 
 	<properties>
-		<org.springframework-version>3.0.5.RELEASE</org.springframework-version>
+		<!-- encoding of project resources -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Groovy version and Groovy major version for the compiler -->
+		<groovy.version>1.8.0</groovy.version>
+		<groovy.version.major>1.8</groovy.version.major>
+
+		<!-- dependency versions -->
+		<spock.version>0.5-groovy-1.8</spock.version>
+		<spock.maven.version>0.5-groovy-1.7</spock.maven.version>
+		<geb.version>0.5.1</geb.version>
+		<selenium.version>2.0b1</selenium.version>
+
+		<!-- plugin versions -->
+		<gmaven.version>1.3</gmaven.version>
+		<surefire.version>2.8.1</surefire.version>
+		<org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+		<h2.version>1.3.156</h2.version>
 	</properties>
 
 	<build>
@@ -23,9 +40,9 @@
 			<plugin>
 				<groupId>org.codehaus.gmaven</groupId>
 				<artifactId>gmaven-plugin</artifactId>
-				<version>1.3</version>
+				<version>${gmaven.version}</version>
 				<configuration>
-					<providerSelection>1.7</providerSelection>
+					<providerSelection>${groovy.version.major}</providerSelection>
 				</configuration>
 				<executions>
 					<execution>
@@ -38,7 +55,7 @@
 					<dependency>
 						<groupId>org.codehaus.gmaven.runtime</groupId>
 						<artifactId>gmaven-runtime-1.7</artifactId>
-						<version>1.3</version>
+						<version>${groovy.version.major}</version>
 						<exclusions>
 							<exclusion>
 								<groupId>org.codehaus.groovy</groupId>
@@ -49,14 +66,14 @@
 					<dependency>
 						<groupId>org.codehaus.groovy</groupId>
 						<artifactId>groovy-all</artifactId>
-						<version>1.7.5</version>
+						<version>${groovy.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.spockframework</groupId>
 				<artifactId>spock-maven</artifactId>
-				<version>0.5-groovy-1.7</version>
+				<version>${spock.maven.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -69,24 +86,38 @@
 	</build>
 
 	<dependencies>
-		<!-- Groovy -->
+		<!-- Groovy library -->
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>${groovy.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Spock -->
 		<dependency>
 			<groupId>org.spockframework</groupId>
 			<artifactId>spock-core</artifactId>
-			<version>0.5-groovy-1.8</version>
+			<version>${spock.version}</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.groovy</groupId>
+					<artifactId>groovy-all</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>${org.springframework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>${org.springframework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.javaconfig</groupId>
@@ -98,7 +129,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.3.156</version>
+			<version>${h2.version}</version>
 		</dependency>
 	</dependencies>
 </project>

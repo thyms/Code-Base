@@ -30,7 +30,7 @@ class SqlScriptExecutorShould extends Specification {
 		
 		then:
 		arrdf << sql.rows("select first_name, last_name from maxdata")
-		arrdf[0] = 'John'
+//		arrdf[0] = 'John'
 //		first_name == 'John'
 //		last_name == 'Carpenter'
 	}
