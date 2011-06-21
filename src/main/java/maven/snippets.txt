@@ -28,6 +28,6 @@ Pom.xml:
 	</build>
 </project>
 
-In the same directory with pom.xml, cmd->mvn eclipse:eclipse
+In the same directory with pom.xml, cmd-> mvn eclipse:eclipse
 
 

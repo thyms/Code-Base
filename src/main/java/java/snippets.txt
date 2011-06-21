@@ -1,0 +1,3 @@
+Java memory settings
+--------------------
+java -Xms256m -Xmx512m -XX:MaxPermSize=256m

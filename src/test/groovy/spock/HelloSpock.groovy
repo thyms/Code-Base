@@ -1,4 +1,4 @@
-package groovy
+package spock
 import spock.lang.*
 
 class HelloSpock extends Specification {
