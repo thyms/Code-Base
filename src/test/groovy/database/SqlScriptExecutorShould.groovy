@@ -1,12 +1,11 @@
-/**
- * 
- */
 package database
 
-import spock.lang.*
 import groovy.sql.Sql
+
 import java.sql.*
 import model.database.SqlScriptExecutor
+
+import spock.lang.*
 
 /**
  * @author Deniz KALFA
@@ -17,22 +16,20 @@ class SqlScriptExecutorShould extends Specification {
 	
 	def "execute sql statements in script file."() {
 		when:
-		def file = new File("src/main/resources/db.sql")
-		
 		Class.forName("org.h2.Driver")
 		def connection = DriverManager.getConnection("jdbc:h2:mem:test", "sa", "")
 		def statement = connection.createStatement()
 		
+		def file = new File("src/main/resources/db.sql")
 		def sqlScriptExecutor = new SqlScriptExecutor(statement)
 		sqlScriptExecutor.execute(file)
-		sql.execute("CREATE TABLE USERS(FIRST_NAME VARCHAR(255), LAST_NAME VARCHAR(255))")
-		sql.execute("insert into users1 values ('John', 'Carpenter')")
-		def name
-		def surname
-		def row = sql.firstRow("select first_name, last_name from users1")
+		
+		def params = ['John', 'Carpenter']
+		sql.execute("insert into person values (?, ?)", params)
+		def row = sql.firstRow("select first_name, last_name from person")
 		
 		then:
-		row['FIRST_NAME'] == 'John'
-		row.LAST_NAME == 'Carpenter'
+		row.FIRST_NAME == 'John'
+		row['LAST_NAME'] == 'Carpenter'
 	}
 }
