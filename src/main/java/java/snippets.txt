@@ -1,3 +1,8 @@
 Java memory settings
 --------------------
 java -Xms256m -Xmx512m -XX:MaxPermSize=256m
+
+
+Remote Debug settings
+---------------------
+java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044

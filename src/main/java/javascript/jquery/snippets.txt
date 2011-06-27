@@ -1,0 +1,9 @@
+Checkbox - check/uncheck
+------------------------
+to check: $('input[name=foo]').attr('checked', true);
+to uncheck: $('input[name=foo]').attr('checked', false);
+
+Checkbox - checked or not?
+--------------------------
+$('input[name=foo]').is(':checked'); // OR
+$('input[name=foo]').attr('checked');
