@@ -1,0 +1,54 @@
+Enums
+-----
+public enum RtcResponseType {
+    
+    UNKNOWN(-1, "Unknown"), // Temporary
+    SUCCESS(0, "Successful Charging"), //
+    INSUFFICIENT_CREDIT(1, "Insufficient_Credit"), //
+    SUBSCRIBER_NOT_FOUND(2, "Subscriber Not Found"), //Permanent
+    SUBSCRIBER_NOT_VALID(3, "Subscriber Not Accepted"), //Permanent
+    SUBSCRIBER_PASSSIVE(4, "Subscriber Passive"), //Temporary
+    INVALID_OPERATION(5, "Invalid Operation. Must be C or R"), //Permanent
+    SYSTEM_ERROR(99, "System Error");//Temporary
+    
+    private int    returnVal;
+    private String description;
+    
+    private RtcResponseType(int returnVal, String description) {
+        this.returnVal = returnVal;
+        this.description = description;
+    }
+    
+    public int getReturnVal() {
+        return returnVal;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    public static RtcResponseType getEnum(int returnVal) {
+        for (RtcResponseType temp : RtcResponseType.values()) {
+            if (temp.getReturnVal() == returnVal) {
+                return temp;
+            }
+        }
+        return UNKNOWN;
+    }
+}
+
+**********************************************************
+Enum.Utils
+    public static <T extends Enum<T>> T getEnum(Class<T> enumClass, String name) {
+        if (name != null) {
+            return Enum.valueOf(enumClass, name);
+        }
+        return null;
+    }
+    
+    public static <T extends Enum<T>> T getEnum(Class<T> enumClass, Enum<?> enumName) {
+        if (enumName != null) {
+            return Enum.valueOf(enumClass, enumName.name());
+        }
+        return null;
+    }
