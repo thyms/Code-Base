@@ -55,6 +55,7 @@ Enum.Utils
     
 
 **********************************************************    
+ Groovy SQL
  sql.execute '''
      create table PROJECT (
          id integer not null,
@@ -62,4 +63,24 @@ Enum.Utils
          url varchar(100),
      )
  '''
+ 
+ 
+subscribers.add(MSISDN: "905431234567", RWM_COUNTRY_ID: 213, COUNTRY_NAME: "Algeria", ATTACH_TIME: 1304208000000, SENDDATE: 1309330796859, FLAG: 0, FLAG_VRP: 0, VODAFONE_OPCO: 1)
+********************************************************** 
+Groovy Properties file
+def props = new Properties()
+new File("message.properties").withInputStream { 
+  stream -> props.load(stream) 
+}
+// accessing the property from Properties object using Groovy's map notation
+println "capacity.created=" + props["capacity.created"]
+
+def config = new ConfigSlurper().parse(props)
+// accessing the property from ConfigSlurper object using GPath expression
+println "capacity.created=" + config.capacity.created
+
+If you only use the property file from within Groovy code you should use the Groovy notation variant directly.
+
+def config = new ConfigSlurper().parse(new File("message.groovy").toURL())
+
     
