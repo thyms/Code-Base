@@ -36,6 +36,42 @@ public enum RtcResponseType {
         return UNKNOWN;
     }
 }
+**********************************************************
+Enum with Abstract Method
+public enum OptionType {
+    GUNLUK_30 {
+        public String getOptionId() {
+            return VrpServiceProperties.OPTION_ID_GUNLUK_30;
+        }
+    },
+    AYLIK_30 {
+        public String getOptionId() {
+            return VrpServiceProperties.OPTION_ID_AYLIK_30;
+        }
+    },
+    AYLIK_60 {
+        public String getOptionId() {
+            return VrpServiceProperties.OPTION_ID_AYLIK_60;
+        }
+    },
+    AYLIK_120 {
+        public String getOptionId() {
+            return VrpServiceProperties.OPTION_ID_AYLIK_120;
+        }
+    },
+    DUNYA_60 {
+        public String getOptionId() {
+            return VrpServiceProperties.OPTION_ID_DUNYA_60;
+        }
+    },
+    DUNYA_120 {
+        public String getOptionId() {
+            return VrpServiceProperties.OPTION_ID_DUNYA_120;
+        }
+    };
+    
+    public abstract String getOptionId();
+}
 
 **********************************************************
 Enum.Utils
@@ -82,5 +118,7 @@ println "capacity.created=" + config.capacity.created
 If you only use the property file from within Groovy code you should use the Groovy notation variant directly.
 
 def config = new ConfigSlurper().parse(new File("message.groovy").toURL())
+
+
 
     
