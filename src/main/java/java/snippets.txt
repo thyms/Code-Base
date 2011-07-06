@@ -33,6 +33,6 @@ MANIFEST.MF
 *********************************************
 *********************************************
 
->>java -Xms256m -Xmx512m -XX:MaxPermSize=256m	org.mypackage.HelloWorld									// Java memory settings
->>java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044 org.mypackage.HelloWorld		// Remote Debug settings
+>>java -Xms256m -Xmx512m -XX:MaxPermSize=256m	org.mypackage.HelloWorld												// Java memory settings
+>>java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044 org.mypackage.HelloWorld					// Remote Debug settings
 >>java -DapplicationBaseDirectory="C:/Base Directory" -DapplicationName="Application Name" org.mypackage.HelloWorld		// Multiple System Properties

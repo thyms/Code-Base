@@ -1,6 +1,214 @@
-Running a groovy class
-----------------------
-cmd-> groovy -cp "junit-4.8.1.jar;spock-core-0.5-groovy-1.8.jar" HelloSpock
+GMaven
+------
+$mvn groovy:shell		// Opens a groovy shell, no overhead, no hustle, just do it.
+$mvn groovy:console		// Opens a groovy console, no overhead, no hustle, just do it.
+$mvn groovy:providers	// Displays gmaven providers.
+
+--> Executing groovy code
+-> Run "execute" goal of "groovy" plugin
+$mvn groovy:execute
+-> Related pom.xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>dk.org</groupId>
+	<artifactId>Kata-Base</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Kata Base</name>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<encoding>utf-8</encoding>
+					<target>1.6</target>
+					<source>1.6</source>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.groovy.maven</groupId>
+				<artifactId>gmaven-plugin</artifactId>
+				<configuration>
+					<source>
+						println project.basedir
+					</source>
+				</configuration>
+			</plugin>		
+		</plugins>
+	</build>
+</project>
+
+** Followings are binded to "generate-resources" phase, "mvn compile" will be enough to make it run.
+-> Execute an Inline Groovy Script
+<plugin>
+    <groupId>org.codehaus.groovy.maven</groupId>
+    <artifactId>gmaven-plugin</artifactId>
+    <executions>
+        <execution>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>execute</goal>
+            </goals>
+            <configuration>
+                <source>
+                    if (project.packaging != 'pom') {
+                        log.info('Copying some stuff...')
+
+                        def dir = new File(project.basedir, 'target/classes/META-INF')
+
+                        ant.mkdir(dir: dir)
+                        ant.copy(todir: dir) {
+                            fileset(dir: project.basedir) {
+                                include(name: 'LICENSE.txt')
+                                include(name: 'NOTICE.txt')
+                            }
+                        }
+                    }
+                </source>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+
+-> Execute a Local Groovy Script
+<plugin>
+    <groupId>org.codehaus.groovy.maven</groupId>
+    <artifactId>gmaven-plugin</artifactId>
+    <executions>
+        <execution>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>execute</goal>
+            </goals>
+            <configuration>
+                <source>${pom.basedir}/src/main/script/myscript.groovy</source>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+
+-> Execute a Remote Groovy Script
+<plugin>
+    <groupId>org.codehaus.groovy.maven</groupId>
+    <artifactId>gmaven-plugin</artifactId>
+    <executions>
+        <execution>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>execute</goal>
+            </goals>
+            <configuration>
+                <source>http://mydomain.com/myscript.groovy</source>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+
+-> Using Java Classes
+<plugin>
+    <groupId>org.codehaus.groovy.maven</groupId>
+    <artifactId>gmaven-plugin</artifactId>
+    <executions>
+        <execution>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>execute</goal>
+            </goals>
+            <configuration>
+                <classpath>
+                    <element>
+                        <groupId>commons-lang</groupId>
+                        <artifactId>commons-lang</artifactId>
+                    </element>
+                </classpath>
+                <source>
+                    import org.apache.commons.lang.SystemUtils
+                    if (SystemUtils.IS_OS_WINDOWS) {
+                        println('Go buy a Mac!')
+                    }
+                </source>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+
+-> Using Groovy Classes
+<plugin>
+    <groupId>org.codehaus.groovy.maven</groupId>
+    <artifactId>gmaven-plugin</artifactId>
+    <executions>
+        <execution>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>execute</goal>
+            </goals>
+            <configuration>
+                <scriptpath>
+                    <element>${pom.basedir}/src/main/script</element>
+                </scriptpath>
+                <source>
+                    import Helper
+                    Helper.callSomeStatic()
+                </source>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+
+-> Custom Properties
+<plugin>
+    <groupId>org.codehaus.groovy.maven</groupId>
+    <artifactId>gmaven-plugin</artifactId>
+    <executions>
+        <execution>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>execute</goal>
+            </goals>
+            <configuration>
+                <properties>
+                    <hello>world</hello>
+                </properties>
+                <source>
+                    println project.properties['hello']
+                    
+                    // or if you prefer, these work just the same:
+                    // println project.properties.hello
+                    // println project.properties.get('hello')
+                    // println project.properties.getProperty('hello')
+                </source>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+
+-> Custom Properties with defaults
+<plugin>
+    <groupId>org.codehaus.groovy.maven</groupId>
+    <artifactId>gmaven-plugin</artifactId>
+    <executions>
+        <execution>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>execute</goal>
+            </goals>
+            <configuration>
+                <defaults>
+                    <hello>world</hello>
+                </defaults>
+                <source>
+                    println project.properties['hello']
+                </source>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+- run "mvn -Dhello=jason" to change the value of hello.
+
+
+****************************************************************************
+****************************************************************************
 
 Spock pom.xml
 -------------
@@ -73,3 +281,10 @@ Spock pom.xml
 		</dependency>
 	</dependencies>
 </project>
+****************************************************************************
+****************************************************************************
+
+
+Running a groovy class
+----------------------
+cmd-> groovy -cp "junit-4.8.1.jar;spock-core-0.5-groovy-1.8.jar" HelloSpock
