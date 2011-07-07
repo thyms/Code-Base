@@ -120,5 +120,38 @@ If you only use the property file from within Groovy code you should use the Gro
 def config = new ConfigSlurper().parse(new File("message.groovy").toURL())
 
 
+Exception Handling Error Log
+----------------------------
+new Throwable().fillInStackTrace().getStackTrace()[5].getClassName()	// Not Preferable
+Thread.currentThread().get StackTrace()[0].getClassName()				// Not Preferable
+exception.getStackTrace()	// Preferable
 
+
+    private String constructLogTextForErrorLevel(String logText, Throwable t, Object... params) {
+        StringBuilder messageBuilder = new StringBuilder(this.prefix);
+        if (t != null) {
+            StackTraceElement stackTrace = t.getStackTrace()[0];
+            messageBuilder.append("[")
+                          .append(getSimpleClassName(stackTrace.getClassName()))
+                          .append("][")
+                          .append(stackTrace.getMethodName())
+                          .append("][")
+                          .append(stackTrace.getLineNumber())
+                          .append(sdfLogTraceId)
+                          .append(": ");
+        }
+        
+        return messageBuilder.append(MessageFormatter.arrayFormat(logText, params)).toString();
+    }
+    
+    private String getSimpleClassName(String fullClassName) {
+        
+        if (fullClassName != null) {
+            int index = fullClassName.lastIndexOf(".");
+            if (index > -1) {
+                return fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
+            }
+        }
+        return fullClassName;
+    }
     
