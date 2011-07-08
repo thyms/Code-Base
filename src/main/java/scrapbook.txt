@@ -155,3 +155,41 @@ exception.getStackTrace()	// Preferable
         return fullClassName;
     }
     
+PL/SQL
+------
+Package&Procedure
+-----------------
+create or replace PACKAGE sms_online_sdf
+AS
+   PROCEDURE sms_olc_sdf (
+      pi_msisdn           IN       VARCHAR2,
+      pi_destination      IN       VARCHAR2,
+      po_return_value     OUT      NUMBER,
+      po_return_message   OUT      VARCHAR2
+   );
+END sms_online_sdf;
+
+create or replace PACKAGE BODY sms_online_sdf
+IS
+   PROCEDURE sms_olc_sdf (
+      pi_msisdn           IN       VARCHAR2,
+      pi_destination      IN       VARCHAR2,
+      po_return_value       OUT      NUMBER,
+      po_return_message   OUT      VARCHAR2,
+   )
+   IS
+   BEGIN
+      po_return_value := 0;
+      po_return_message := 'Successful Charging';
+      IF SUBSTR (pi_msisdn, 1, 12) = '905421000000'
+      THEN
+         po_return_value := 0;
+         po_return_message := 'Successful Charging';
+      ELSIF SUBSTR (pi_msisdn, 1, 12) = '905421000001'
+      THEN
+         po_return_value := 1;
+         po_return_message := 'INSUFFICIENT CREDIT';
+   END;
+END sms_online_sdf;
+
+    
