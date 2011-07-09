@@ -3,6 +3,18 @@ $rm -f anyFile.txt
 $rm -rf anyFolder
 
 
+Navigation previous command arguments
+-------------------------------------
+$echo a b c d e
+$echo [Alt+.] -> echo e
+$echo !:1 -> echo a
+$echo !:2 -> echo b
+$echo !* -> echo a b c d e
+$echo !$ -> echo e
+$echo !^ -> echo a
+$echo [Alt+1] [Alt+Ctrl+y] -> echo a
+
+
 Zip, Unzip using gzip/gunzip and tar
 ------------------------------------
 -> Unzipping
