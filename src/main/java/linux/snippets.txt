@@ -13,6 +13,8 @@ $gunzip < foo.tar.gz | tar xvf -
 $tar cvf - foodir | gzip > foo.tar.gz
 -> List all files in archive.tar verbosely.
 $tar -tvf foo.tar
+-> Unzipping a .zip file
+$unzip letters.zip 
 
 
 Setup the environment variable
