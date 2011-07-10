@@ -3,9 +3,12 @@
  */
 package spring.context
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import model.car.*
-import spock.lang.Specification;
+import model.car.Car
+import model.car.Engine
+
+import org.springframework.context.support.ClassPathXmlApplicationContext
+
+import spock.lang.Specification
 
 /**
  * @author Deniz KALFA

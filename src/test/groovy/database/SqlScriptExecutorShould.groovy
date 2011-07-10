@@ -2,10 +2,11 @@ package database
 
 import groovy.sql.Sql
 
-import java.sql.*
-import model.database.SqlScriptExecutor
+import java.sql.DriverManager
 
-import spock.lang.*
+import model.database.SqlScriptExecutor
+import spock.lang.Shared
+import spock.lang.Specification
 
 /**
  * @author Deniz KALFA

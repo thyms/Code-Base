@@ -1,10 +1,10 @@
 package spring.context
 
-import model.car.Car;
-import model.car.Engine;
+import model.car.Car
+import model.car.Engine
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
-import springframework.context.model.car.*
+
 import spock.lang.Specification
 
 /**

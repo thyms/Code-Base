@@ -3,7 +3,8 @@
  */
 package groovy.sql
 
-import spock.lang.*
+import spock.lang.Shared;
+import spock.lang.Specification;
 
 /**
  * @author Deniz KALFA
