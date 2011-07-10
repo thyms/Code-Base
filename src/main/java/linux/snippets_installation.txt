@@ -96,3 +96,19 @@ $sudo apt-get update
 $sudo apt-get install sun-java6-jdk
 - for JRE
 $sudo apt-get install sun-java6-jre sun-java6-plugin
+
+Installing Hudson on Ubuntu 11.04
+---------------------------------
+// TODO: find from Hudson Documentation
+
+-> Hudson Home: /var/lib/hudson
+-> Hudson daemon/script: /etc/init.d/hudson
+-> Hudson start/stop: $sudo /etc/init.d/hudson start/stop
+
+
+Installing SystemLoad Indicator
+-------------------------------
+$sudo add-apt-repository ppa:indicator-multiload/stable-daily
+$sudo apt-get update
+$sudo apt-get install indicator-multiload
+$indicator-multiload
