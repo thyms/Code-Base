@@ -1,3 +1,12 @@
+Loading a resource/properties file
+----------------------------------
+Properties p = new Properties();
+InputStream is = Main.class.getClassLoader().getResourceAsStream("version.properties");
+p.load(is);
+is.close();
+assertEquals(p.getProperty("artifactId") + " " + p.getProperty("version"), Main.getVersionInfo());
+
+
 Enums
 -----
 public enum RtcResponseType {
