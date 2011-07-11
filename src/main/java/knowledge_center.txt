@@ -1,0 +1,6 @@
+Error: [Fatal Error] :2:8: The processing instruction target matching "[xX][mM][lL]" is not allowed.
+Fix: There shouldn't be any space char at the beginning of the xml file. Just use "trim()".
+
+
+Error:
+Fix:
