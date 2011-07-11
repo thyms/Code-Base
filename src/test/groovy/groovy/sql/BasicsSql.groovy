@@ -10,7 +10,7 @@ import spock.lang.Specification;
  * @author Deniz KALFA
  *
  */
-class SqlBasics extends Specification {
+class BasicsSql extends Specification {
 	@Shared Sql sql = Sql.newInstance("jdbc:h2:mem:test", "sa", "", "org.h2.Driver")
 
 	def setupSpec() {

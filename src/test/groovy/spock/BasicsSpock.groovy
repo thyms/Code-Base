@@ -4,7 +4,7 @@ import groovy.sql.Sql
 import spock.lang.Shared
 import spock.lang.Specification
 
-class Basics extends Specification {
+class BasicsSpock extends Specification {
 
 	def setupSpec() {
 	}		// runs before the first feature method
