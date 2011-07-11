@@ -36,3 +36,11 @@ MANIFEST.MF
 >>java -Xms256m -Xmx512m -XX:MaxPermSize=256m	org.mypackage.HelloWorld												// Java memory settings
 >>java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044 org.mypackage.HelloWorld					// Remote Debug settings
 >>java -DapplicationBaseDirectory="C:/Base Directory" -DapplicationName="Application Name" org.mypackage.HelloWorld		// Multiple System Properties
+
+
+Find URL of a file
+------------------
+URL log4jFile = getClass().getClassLoader().getResource("log4j_basic.xml")
+URL log4jFile = new File("src/main/resources/log4j_basic.xml").toURI().toURL()
+URL log4jFile = new File("src/test/resources/log4j_basic.xml").toURI().toURL()
+InputStream is = getClass().getClassLoader().getResourceAsStream("log4j_basic.xml");

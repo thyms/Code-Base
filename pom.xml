@@ -9,7 +9,7 @@
 	<properties>
 		<!-- encoding of project resources -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
+
 		<!-- plugin versions -->
 		<gmaven.version>1.3</gmaven.version>
 
@@ -128,8 +128,8 @@
 			<artifactId>h2</artifactId>
 			<version>${h2.version}</version>
 		</dependency>
-		
-		<!-- Logging  -->
+
+		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
