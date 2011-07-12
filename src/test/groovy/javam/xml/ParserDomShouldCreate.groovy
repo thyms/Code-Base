@@ -18,7 +18,7 @@ import org.w3c.dom.Element
  * @author Deniz KALFA
  *
  */
-class ParserDomShould {
+class ParserDomShouldCreate {
 	def expectedXml = '''
 		<?xml version="1.0" encoding="UTF-8" standalone="no" ?> 
 		<company>
@@ -32,12 +32,12 @@ class ParserDomShould {
 	'''.trim()
 	
 	@Test
-	void "create the desired expectedXml."() {
-		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance()
-		DocumentBuilder docBuilder = docFactory.newDocumentBuilder()
+	void "the expected xml."() {
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance()
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder()
 
 		// root elements
-		Document doc = docBuilder.newDocument()
+		Document doc = documentBuilder.newDocument()
 		Element rootElement = doc.createElement("company")
 		doc.appendChild(rootElement)
 
