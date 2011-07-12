@@ -11,13 +11,13 @@ import org.junit.Test;
  *
  */
 public class TemplateTestJUnit {
-	@BeforeClass public static void setupOnce() {}
+	@BeforeClass public static void oneTimeSetUp() {}
 	
-	@Before public void setup() {} 
+	@AfterClass public static void oneTimeTearDown() {}
 	
-	@Test public void testMethod() {}
+	@Before public void setUp() {} 
 	
 	@After public void tearDown() {}
 	
-	@AfterClass public static void tearDownLast() {}
+	@Test public void testMethod() {}
 }
