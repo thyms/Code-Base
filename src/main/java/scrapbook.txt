@@ -1,3 +1,49 @@
+Stored Procedure-Oracle
+-----------------------
+CREATE OR REPLACE PROCEDURE insertDBUSER(
+	   p_userid IN DBUSER.USER_ID%TYPE,
+	   p_username IN DBUSER.USERNAME%TYPE,
+	   p_createdby IN DBUSER.CREATED_BY%TYPE,
+	   p_date IN DBUSER.CREATED_DATE%TYPE)
+IS
+BEGIN
+ 
+  INSERT INTO DBUSER ("USER_ID", "USERNAME", "CREATED_BY", "CREATED_DATE") 
+  VALUES (p_userid, p_username,p_createdby, p_date);
+ 
+  COMMIT;
+ 
+END;
+/
+
+CREATE OR REPLACE PROCEDURE getDBUSERByUserId(
+	   p_userid IN DBUSER.USER_ID%TYPE,
+	   o_username OUT DBUSER.USERNAME%TYPE,
+	   o_createdby OUT  DBUSER.CREATED_BY%TYPE,
+	   o_date OUT DBUSER.CREATED_DATE%TYPE)
+IS
+BEGIN
+ 
+  SELECT USERNAME , CREATED_BY, CREATED_DATE
+  INTO o_username, o_createdby,  o_date 
+  FROM  DBUSER WHERE USER_ID = p_userid;
+ 
+END;
+/
+
+CREATE OR REPLACE PROCEDURE getDBUSERCursor(
+	   p_username IN DBUSER.USERNAME%TYPE,
+	   c_dbuser OUT SYS_REFCURSOR)
+IS
+BEGIN
+ 
+  OPEN c_dbuser FOR
+  SELECT * FROM DBUSER WHERE USERNAME LIKE p_username || '%';
+ 
+END;
+/
+
+
 Running a command from Java
 ---------------------------
 String[] cmd = { "/bin/sh", "-c", "mycommand > /dev/tty" };
