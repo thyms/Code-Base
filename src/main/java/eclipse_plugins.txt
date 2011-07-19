@@ -1,0 +1,9 @@
+- Eclipse Color Theme
+- EGit
+- Google Plugin
+- Groovy Plugin
+- Market Place Plugin
+- Maven/M2eclipse Plugin
+- Properties Editor
+- Sonar Integration Plugin
+- Subclipse Plugin
