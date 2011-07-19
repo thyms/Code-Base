@@ -15,7 +15,6 @@
 
 		<!-- Groovy version and Groovy major version for the compiler -->
 		<groovy.version>1.8.0</groovy.version>
-		<groovy.version.major>1.8</groovy.version.major>
 
 		<!-- dependency versions -->
 		<spock.version>0.5-groovy-1.8</spock.version>
@@ -39,7 +38,7 @@
 				<artifactId>gmaven-plugin</artifactId>
 				<version>${gmaven.version}</version>
 				<configuration>
-					<providerSelection>${groovy.version.major}</providerSelection>
+					<providerSelection>1.7</providerSelection>
 				</configuration>
 				<executions>
 					<execution>
