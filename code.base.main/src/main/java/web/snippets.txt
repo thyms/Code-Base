@@ -1,0 +1,4 @@
+Html, displaying utf-8 characters
+---------------------------------
+- Put the following at the top of the html pade
+<%@ page contentType=”text/html;charset=UTF-8″ %>

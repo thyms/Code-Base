@@ -2,4 +2,6 @@ Git and EGit Setup
 ------------------
 - Follow the instructions at http://help.github.com/win-set-up-git/
 - Have ssh folder under "MyDocuments" or configure Eclipse to see .ssh under "MyDocuments"
+or
+- Choose "https" connection type and use regular username/password style.(preferred)
 
