@@ -110,6 +110,12 @@ public abstract class RetriedAssert {
     public abstract void run() throws Exception;
 }
 
+
+Html, displaying utf-8 characters
+---------------------------------
+- Put the following at the top of the html pade
+<%@ page contentType=”text/html;charset=UTF-8¨ %>
+
 Stored Procedure-Oracle
 -----------------------
 CREATE OR REPLACE PROCEDURE insertDBUSER(
@@ -160,6 +166,15 @@ Running a command from Java
 ---------------------------
 String[] cmd = { "/bin/sh", "-c", "mycommand > /dev/tty" };
 Runtime.getRuntime().exec(cmd);
+
+Loading a resource/properties file
+----------------------------------
+Properties p = new Properties();
+InputStream is = Main.class.getClassLoader().getResourceAsStream("version.properties");
+p.load(is);
+is.close();
+assertEquals(p.getProperty("artifactId") + " " + p.getProperty("version"), Main.getVersionInfo());
+
 
 
 Enums
