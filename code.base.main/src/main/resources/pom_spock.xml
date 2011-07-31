@@ -39,14 +39,14 @@
 					<dependency>
 						<groupId>org.codehaus.groovy</groupId>
 						<artifactId>groovy-all</artifactId>
-						<version>1.7.5</version>
+						<version>1.8.0</version>
 					</dependency>
 				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.spockframework</groupId>
 				<artifactId>spock-maven</artifactId>
-				<version>0.5-groovy-1.7</version>
+				<version>0.5-groovy-1.8</version>
 				<executions>
 					<execution>
 						<goals>
@@ -62,7 +62,7 @@
 		<dependency>
 			<groupId>org.spockframework</groupId>
 			<artifactId>spock-core</artifactId>
-			<version>0.5-groovy-1.7</version>
+			<version>0.5-groovy-1.8</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

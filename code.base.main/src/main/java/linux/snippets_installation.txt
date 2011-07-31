@@ -112,3 +112,51 @@ $sudo add-apt-repository ppa:indicator-multiload/stable-daily
 $sudo apt-get update
 $sudo apt-get install indicator-multiload
 $indicator-multiload &
+
+Installing Oracle Express Edition
+---------------------------------
+$sudo vi /etc/apt/sources.list
+append this: deb http://oss.oracle.com/debian unstable main non-free
+$wget http://oss.oracle.com/el4/RPM-GPG-KEY-oracle -O- | sudo apt-key add -
+$sudo apt-get update
+$sudo aptitude apt-get install oracle-xe-universal
+$sudo /etc/init.d/oracle-xe configure
+home page: http://127.0.0.1:8080/apex
+
+to start manually: $sudo /etc/init.d/oracle-xe start (this is not working unless logged in with oracle user, try restart)
+to restart manually: $sudo /etc/init.d/oracle-xe restart
+to stop  manually: $sudo /etc/init.d/oracle-xe stop
+to configure: $sudo /etc/init.d/oracle-xe configure
+to view status: $sudo /etc/init.d/oracle-xe status
+to edit configuration: $sudo vi /etc/default/oracle-xe
+
+Error: /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/bin/nls_lang.sh:114:[[:not found
+Solution: replace '[[' with '[' and ']]' with ']'
+
+Error: Cannot find 'sqlplus' command
+Solution: Add content of '/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/bin/oracle_env.sh' to ~/.bashrc
+Steps:
+Copy contents by using: $sudo vi /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/bin/oracle_env.sh
+Paste them to ~/.bashrc by using: $sudo vi ~/.bashrc
+
+Error: Cannot login as 'sys' and/or 'system'
+Solution: Add your user to DBA group. 
+Steps:
+$sudo usermod -a -G dba deniz
+$ sqlplus "/ as sysdba"
+SQL> show user
+USER is "SYS"
+SQL> passw system
+Changing password for system
+New password:
+Retype new password:
+Password changed
+SQL> quit
+
+$ sqlplus system/password
+SQL> passw sys
+Changing password for sys
+New password:
+Retype new password:
+Password changed
+SQL> quit

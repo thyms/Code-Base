@@ -1,6 +1,33 @@
 Error: [Fatal Error] :2:8: The processing instruction target matching "[xX][mM][lL]" is not allowed.
-Fix: There shouldn't be any space char at the beginning of the xml file. Just use "trim()".
+Solution: There shouldn't be any space char at the beginning of the xml file. Just use "trim()".
 
+Error: /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/bin/nls_lang.sh:114:[[:not found
+Solution: replace '[[' with '[' and ']]' with ']'
 
-Error:
-Fix:
+Error: Cannot find 'sqlplus' command
+Solution: Add content of '/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/bin/oracle_env.sh' to ~/.bashrc
+Steps:
+Copy contents by using: $sudo vi /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/bin/oracle_env.sh
+Paste them to ~/.bashrc by using: $sudo vi ~/.bashrc
+
+Error: Cannot login as 'sys' and/or 'system'
+Solution: Add your user to DBA group. 
+Steps:
+$sudo usermod -a -G dba deniz
+$ sqlplus "/ as sysdba"
+SQL> show user
+USER is "SYS"
+SQL> passw system
+Changing password for system
+New password:
+Retype new password:
+Password changed
+SQL> quit
+
+$ sqlplus system/password
+SQL> passw sys
+Changing password for sys
+New password:
+Retype new password:
+Password changed
+SQL> quit
