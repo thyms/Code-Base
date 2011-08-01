@@ -113,8 +113,8 @@ $sudo apt-get update
 $sudo apt-get install indicator-multiload
 $indicator-multiload &
 
-Installing Oracle Express Edition
----------------------------------
+Installing Oracle Express Edition on Ubuntu
+-------------------------------------------
 $sudo vi /etc/apt/sources.list
 append this: deb http://oss.oracle.com/debian unstable main non-free
 $wget http://oss.oracle.com/el4/RPM-GPG-KEY-oracle -O- | sudo apt-key add -
@@ -160,3 +160,18 @@ New password:
 Retype new password:
 Password changed
 SQL> quit
+
+
+Installing MySql on Ubuntu
+--------------------------
+$sudo apt-get install mysql-server
+$mysql -u root -p
+mysql>create database test
+
+Installing MySql PhpMyAdmin on Ubuntu
+-------------------------------------
+$sudo apt-get install phpmyadmin
+$sudo vi /etc/apache2/apache2.conf
+->Add the following line of code inside apache2.conf:
+Include /etc/phpmyadmin/apache.conf
+$sudo /etc/init.d/apache2 restart

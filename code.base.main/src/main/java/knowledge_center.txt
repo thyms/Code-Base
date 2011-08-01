@@ -31,3 +31,17 @@ New password:
 Retype new password:
 Password changed
 SQL> quit
+
+Error: java.sql.SQLException: null,  message from server: "Host '192.168.2.21' is not allowed to connect to this MySQL server"
+Solution: The default from mysql server is to be binding to localhost (127.0.0.1), this means it will only accept connections from local applications. 
+To change that, edit /etc/mysql/my.cnf and comment out the line bind-address = 127.0.0.1: 
+Then you will need to restart the mysql server with: /etc/init.d/mysql restart
+Steps:
+$sudo vi /etc/mysql/my.cnf
+->comment out the line bind-address = 127.0.0.1
+$sudo /etc/init.d/mysql restart
+
+
+Error: java.sql.SQLException: null,  message from server: "Host '192.168.2.21' is not allowed to connect to this MySQL server"
+Solution: Create a user on user table on mysql database with a host ip 192.168.2.21
+Steps:

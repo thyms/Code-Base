@@ -1,0 +1,8 @@
+Connection Strings
+------------------
+Oracle: Sql sql = Sql.newInstance('jdbc:oracle:thin:@192.168.2.59:1521:XE', 'deniz', 'deniz', 'oracle.jdbc.driver.OracleDriver')
+MySql: Sql sql = Sql.newInstance('jdbc:mysql://localhost:3306/test', 'root', 'root', 'com.mysql.jdbc.Driver')
+HSql-Memory:  Sql sql = Sql.newInstance('jdbc:hsqldb:mem:test', 'sa', '', 'org.hsqldb.jdbcDriver')
+HSql-File: Sql sql = Sql.newInstance('jdbc:hsqldb:file:/opt/db/testdb', 'sa', '', 'org.hsqldb.jdbcDriver')
+H2-Memory: Sql sql = Sql.newInstance('jdbc:h2:mem:test', 'sa', 'sa', 'org.h2.Driver')
+H2-File: Sql sql = Sql.newInstance('jdbc:h2:~/test', 'sa', 'sa', 'org.h2.Driver') // 'test' in the user home directory

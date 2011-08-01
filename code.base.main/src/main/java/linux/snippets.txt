@@ -2,6 +2,40 @@ $mkdir newDirectory
 $rm -f anyFile.txt
 $rm -rf anyFolder
 
+whereis Command
+---------------
+whereis  -  locate the binary, source, and manual page files for a command
+$whereis mysql
+>mysql: /usr/bin/mysql /etc/mysql /usr/lib/mysql /usr/share/mysql /usr/share/man/man1/mysql.1.gz
+
+which Command
+-------------
+which - locate a command
+$which
+>/usr/bin/mysql
+
+Finding files
+-------------
+$sudo find / -iname my.cnf
+or
+$locate my.conf
+update index database for 'locate'
+$updatedb
+
+
+Crontab Usage
+-------------
+# m h  dom mon dow   command
+Append this to crontab file(e.g. /tmp/crontab.h0se8M/crontab)
+
+Sample:
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+
+# Every night at 4:02am, excluding /mnt/data and /mnt/files
+02 4 * * * /usr/bin/updatedb -e /mnt/data,/mnt/files
+
 
 Navigation previous command arguments
 -------------------------------------

@@ -1,0 +1,57 @@
+08-01 01:46:16 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "TABLENAME" not found; SQL statement:
+select * from tableName [42102-156]
+08-01 01:46:40 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "TABLENAME" not found; SQL statement:
+select * from tableName [42102-156]
+08-01 01:46:56 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "USERS" not found; SQL statement:
+select * from users [42102-156]
+08-01 01:47:34 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "USERS" not found; SQL statement:
+select * from users [42102-156]
+08-01 01:48:16 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "USERS" not found; SQL statement:
+select * from users [42102-156]
+08-01 01:48:49 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "USERS" already exists; SQL statement:
+
+create table users (id number, first_name varchar2(200)) [42101-156]
+08-01 01:49:02 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "USERS" already exists; SQL statement:
+
+create table users (id number, first_name varchar2(200)) [42101-156]
+08-01 01:49:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "USERS" already exists; SQL statement:
+
+create table users (id number, first_name varchar2(200)) [42101-156]
+08-01 01:49:27 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "USERS" already exists; SQL statement:
+
+create table users (id number, first_name varchar2(200)) [42101-156]
+08-01 01:49:40 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "USERS" already exists; SQL statement:
+
+create table users (id number, first_name varchar2(200)) [42101-156]
+08-01 01:49:54 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "USERS" already exists; SQL statement:
+
+create table users (id number, first_name varchar2(200)) [42101-156]
+08-01 01:50:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "
+DROP TABLE USERS_TABLE
+CREATE[*] TABLE USERS_TABLE (ID NUMBER, FIRST_NAME VARCHAR2(200)) "; SQL statement:
+
+drop table users_table
+create table users_table (id number, first_name varchar2(200)) [42000-156]
+08-01 01:50:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "USERS_TABLE" not found; SQL statement:
+
+insert into users_table values(1, 'Deniz') [42102-156]
+08-01 01:50:58 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "USERS_TABLE" not found; SQL statement:
+select * from users_table [42102-156]
+08-01 01:51:34 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "USERS_TABLE" not found; SQL statement:
+
+drop table users_table [42102-156]

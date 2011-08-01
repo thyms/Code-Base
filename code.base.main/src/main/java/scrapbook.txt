@@ -1,6 +1,7 @@
-Oracle Jdbc Connection
-----------------------
-Sql sql = Sql.newInstance('jdbc:oracle:thin:@192.168.2.59:1521:XE', 'deniz', 'deniz', 'oracle.jdbc.driver.OracleDriver')
+Spring sql script execute method
+--------------------------------
+SimpleJdbcTestUtils.executeSqlScript()
+
 
 RowMapper Test
 --------------
