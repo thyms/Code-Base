@@ -1,3 +1,7 @@
+Running a groovy class
+----------------------
+cmd-> groovy -cp "junit-4.8.1.jar;spock-core-0.5-groovy-1.8.jar" HelloSpock
+
 H2 Database quick start in Groovy with Grab
 -------------------------------------------
 @GrabConfig(systemClassLoader=true)
@@ -225,8 +229,3 @@ $mvn groovy:execute
 
 ****************************************************************************
 ****************************************************************************
-
-
-Running a groovy class
-----------------------
-cmd-> groovy -cp "junit-4.8.1.jar;spock-core-0.5-groovy-1.8.jar" HelloSpock
