@@ -13,12 +13,12 @@ import spock.lang.Specification
  *
  */
 class SqlScriptExecutorShould extends Specification {
-	@Shared sql = Sql.newInstance("jdbc:h2:mem:test", "sa", "", "org.h2.Driver")
+	@Shared sql = Sql.newInstance("jdbc:h2:mem:test", "sa", "sa", "org.h2.Driver")
 	
 	def "execute sql statements in script file."() {
 		when:
 		Class.forName("org.h2.Driver")
-		def connection = DriverManager.getConnection("jdbc:h2:mem:test", "sa", "")
+		def connection = DriverManager.getConnection("jdbc:h2:mem:test", "sa", "sa")
 		def statement = connection.createStatement()
 		
 		def file = new File("src/main/resources/db.sql")

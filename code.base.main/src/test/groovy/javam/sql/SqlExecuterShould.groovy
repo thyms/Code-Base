@@ -14,9 +14,6 @@ import spock.lang.Specification
  *
  */
 class SqlExecuterShould extends Specification {
-	def setup() {
-		
-	}
 	
 	def "executer given sql script."() {
 		setup:
