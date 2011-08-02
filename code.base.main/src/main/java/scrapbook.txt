@@ -369,6 +369,7 @@ IS
       THEN
          po_return_value := 1;
          po_return_message := 'INSUFFICIENT CREDIT';
+	  END IF; 
    END;
 END sms_online_sdf;
 

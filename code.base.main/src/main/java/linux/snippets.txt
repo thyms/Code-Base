@@ -2,6 +2,10 @@ $mkdir newDirectory
 $rm -f anyFile.txt
 $rm -rf anyFolder
 
+Finding specific processes
+--------------------------
+$ps -ef | grep java
+
 whereis Command
 ---------------
 whereis  -  locate the binary, source, and manual page files for a command

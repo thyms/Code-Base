@@ -1,0 +1,14 @@
+Ubuntu 11.04
+------------
+Ip: 192.168.2.59
+
+- Java
+- Maven
+- Eclipse
+- Mysql
+- PhpMyAdmin
+- Oracle
+- Oracle Admin Console
+- Hudson
+- Sonar
+- Archiva

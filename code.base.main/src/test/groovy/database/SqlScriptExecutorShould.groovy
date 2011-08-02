@@ -3,8 +3,8 @@ package database
 import groovy.sql.Sql
 
 import java.sql.DriverManager
-import model.database.SqlScriptExecutor
 
+import javam.sql.SqlScriptExecutor
 import spock.lang.Shared
 import spock.lang.Specification
 
