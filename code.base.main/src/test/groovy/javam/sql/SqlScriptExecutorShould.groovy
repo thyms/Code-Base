@@ -1,4 +1,4 @@
-package database
+package javam.sql
 
 import groovy.sql.Sql
 
