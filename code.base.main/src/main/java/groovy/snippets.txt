@@ -2,6 +2,35 @@ Running a groovy class
 ----------------------
 cmd-> groovy -cp "junit-4.8.1.jar;spock-core-0.5-groovy-1.8.jar" HelloSpock
 
+Formatting strings with sprintf method
+--------------------------------------
+str = sprintf( '%2$s %3$s %1$s', ['cool!', 'Groovy', 'is'])
+// Uses Java Formatter: http://download.oracle.com/javase/1.5.0/docs/api/java/util/Formatter.html
+println str
+
+
+Executing an .exe
+-----------------
+input = 'path_to_cygwin/bin/ps.exe'.execute().text
+
+Getting input from console
+--------------------------
+new BufferedReader(new InputStreamReader(System.in)).eachLine{
+	println(">" + it.trim() + "<");
+}
+
+"each" closure with index "eachWithIndex"
+-----------------------------------------
+def numbers = [ 5, 7, 9, 12 ]
+numbers.eachWithIndex{ num, idx -> println "$idx: $num" }
+
+Sending mail with AntBuilder
+----------------------------
+ant = new AntBuilder()
+ant.mail(from:'manager@grumpybank.com', tolist:'innocent@poorhouse.com',
+    encoding:'plain', mailhost:'mail.someserver.com',
+    subject:'Friendly Letter', message:'this is a test message')
+
 H2 Database quick start in Groovy with Grab
 -------------------------------------------
 @GrabConfig(systemClassLoader=true)
