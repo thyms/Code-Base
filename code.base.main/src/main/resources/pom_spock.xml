@@ -8,14 +8,31 @@
 	<packaging>jar</packaging>
 	<name>Hello Spock</name>
 
+	<properties>
+		<gmaven.version>1.3</gmaven.version>
+		<gmaven.provider.version>1.7</gmaven.provider.version>
+		<groovy.version>1.8.0</groovy.version>
+		<spock.maven.version>0.5-groovy-1.8</spock.maven.version>
+		<spock.core.version>0.5-groovy-1.8</spock.core.version>
+	</properties>
+	
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.codehaus.gmaven</groupId>
 				<artifactId>gmaven-plugin</artifactId>
-				<version>1.3</version>
+				<version>${gmaven.version}</version>
 				<configuration>
-					<providerSelection>1.7</providerSelection>
+					<providerSelection>${gmaven.provider.version}</providerSelection>
 				</configuration>
 				<executions>
 					<execution>
@@ -28,7 +45,7 @@
 					<dependency>
 						<groupId>org.codehaus.gmaven.runtime</groupId>
 						<artifactId>gmaven-runtime-1.7</artifactId>
-						<version>1.3</version>
+						<version>${gmaven.version}</version>
 						<exclusions>
 							<exclusion>
 								<groupId>org.codehaus.groovy</groupId>
@@ -39,14 +56,14 @@
 					<dependency>
 						<groupId>org.codehaus.groovy</groupId>
 						<artifactId>groovy-all</artifactId>
-						<version>1.8.0</version>
+						<version>${groovy.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.spockframework</groupId>
 				<artifactId>spock-maven</artifactId>
-				<version>0.5-groovy-1.8</version>
+				<version>${spock.maven.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -69,7 +86,7 @@
 					<dependency>
 						<groupId>org.codehaus.groovy</groupId>
 						<artifactId>groovy-all</artifactId>
-						<version>1.8.0</version>
+						<version>${groovy.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -80,7 +97,7 @@
 		<dependency>
 			<groupId>org.spockframework</groupId>
 			<artifactId>spock-core</artifactId>
-			<version>0.5-groovy-1.8</version>
+			<version>${spock.core.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
