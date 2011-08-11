@@ -1,3 +1,145 @@
+//import java.text.DateFormatSymbols as Symbols
+//items = new Symbols(Locale.ENGLISH).shortWeekdays.toList()[1..7]
+//assert items == ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+//// not as random as you might expect
+//println items.sort{ Math.random() }
+//// => ["Sat", "Tue", "Sun", "Wed", "Mon", "Thu", "Fri"]
+//// better to use the built-in method for this purpose
+//Collections.shuffle(items)
+//println items
+//// => ["Wed", "Tue", "Fri", "Sun", "Sat", "Thu", "Mon"]
+
+//items = [1, 2, 3, 4, 5]
+//processed = []
+//10.times{
+//	processed << items[0]
+//	items = items[1..-1] + items[0]
+//}
+//assert processed == [1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
+
+//class Employee {
+//	def name
+//	def position
+//	def salary
+//}
+//staff = [new Employee(name:'Jim',position:'Manager',salary:26000),
+//		 new Employee(name:'Jill',position:'Engineer',salary:24000),
+//		 new Employee(name:'Jack',position:'Engineer',salary:22000)]
+//println staff*.name
+//
+//assert staff.sort { a,b -> a.name <=> b.name }*.name == ["Jack", "Jill", "Jim"]
+//// sort by first two characters of name and if equal by descending salary
+//assert staff.sort { a,b ->
+//	astart = a.name[0..1]
+//	bstart = b.name[0..1]
+//	if (astart == bstart) return b.salary <=> a.salary
+//	return astart <=> bstart
+//}*.name == ["Jack", "Jim", "Jill"]
+
+//boolean result = ''.trim()
+//println result	// false
+
+//boolean result = 'd'.trim()
+//println result	// true
+
+
+//println line = ''' 
+//	fda
+//	
+// a'''.split('\n').findAll { it.trim() }.collect { it.trim() }
+
+//class Employee {
+//	def name
+//	def position
+//	def salary
+//}
+//staff = [new Employee(name:'Jim',position:'Manager',salary:26000),
+//		 new Employee(name:'Jill',position:'Engineer',salary:24000),
+//		 new Employee(name:'Jack',position:'Engineer',salary:22000)]
+//
+//engineers = staff.findAll { e -> e.position == 'Engineer' }
+//assert engineers.size() == 2
+//
+//highPaid = staff.findAll { e -> e.salary > 23000 }
+//assert highPaid*.name == ["Jim", "Jill"]
+
+
+//class Employee {
+//    def name
+//    def position
+//    def salary
+//}
+//staff = [new Employee(name:'Jim',position:'Manager',salary:26000),
+//         new Employee(name:'Jill',position:'Engineer',salary:24000),
+//         new Employee(name:'Jack',position:'Engineer',salary:22000)]
+//highestEngineer = staff.find { emp -> emp.position == 'Engineer' }
+//assert highestEngineer.salary == 24000
+
+//2.times { println 'Deniz' }
+
+//def shift2 = {friends -> one = friends[0]; two = friends[1]; 2.times{friends.remove(0)}}
+//friends = 'Peter Paul Mary Jim Tim'.split(' ').toList()
+//shift2(friends)
+//assert one == 'Peter'
+//assert two == 'Paul'
+//assert friends == ["Mary", "Jim", "Tim"]
+//
+//def pop2(items) { items[0..1] }
+//beverages = 'Dew Jolt Cola Sprite Fresca'.split(' ').toList()
+//pair = pop2(beverages)
+//assert pair == ["Dew", "Jolt"]
+
+//items = ["the", "quick", "brown", "fox"]
+//assert items.reverse() == ["fox", "brown", "quick", "the"]
+//
+//firstLetters = []
+//items.reverseEach{ firstLetters += it[0] }
+//assert firstLetters.join() == 'fbqt'
+//
+//descending = items.sort().reverse()
+//assert descending == ["the", "quick", "fox", "brown"]
+//descendingBySecondLastLetter = items.sort { a,b -> b[-2] <=> a[-2] }
+//assert descendingBySecondLastLetter == ["brown", "fox", "the", "quick"]
+
+//members = [ "Time", "Flies" ]
+//initiates =  [ "An", "Arrow" ]
+//members += initiates
+//assert members == ["Time", "Flies", "An", "Arrow"]
+//
+//members.add(2, "Like")
+//assert members == ["Time", "Flies", "Like", "An", "Arrow"]
+//
+//members[0] = "Fruit"
+
+//members[2..4] = ["A", "Banana"]
+//assert members == ["Fruit", "Flies",  "A", "Banana"]
+
+//a = [1, 3, 5, 6, 7, 8]
+//b = [2, 3, 5, 7, 9]
+//// intersection
+//assert a.intersect(b) == [3, 5, 7]
+//// union
+//assert (a + b).unique().sort() == [1, 2, 3, 5, 6, 7, 8, 9]
+//// difference
+//assert (a - b) == [1, 6, 8]
+
+//assert [ 1, 1, 2, 2, 3, 3, 3, 5 ].unique() == [ 1, 2, 3, 5 ]
+//assert [ 1, 1, 2, 2, 3, 3, 3, 4, 5 ] - [ 1, 2, 4 ]  ==  [3, 3, 3, 5]
+//assert [ 1, 1, 2, 2, 3, 3, 3, 4, 5 ].unique() - [ 1, 2, 4 ]  ==  [3, 5]
+
+
+//a = [0.5, 3]; b = [0, 1]
+//assert [a, b].flatten().collect{ it * 7 } == [3.5, 21, 0, 8]
+
+//marbleColors = 'red green yellow'.split(' ').grep(~/^g.*n$/)
+//println marbleColors
+
+//marbleColors = 'red green yellow'.split(' ')
+//def result = marbleColors.find{ it =~ /ee/ }
+
+//marbleColors = ['red', 'green', 'yellow']
+//def result = marbleColors.find{ it =~ /ee/ } 
+
 //import java.text.DateFormat
 //import java.text.SimpleDateFormat
 //
