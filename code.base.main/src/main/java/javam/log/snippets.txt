@@ -1,0 +1,74 @@
+Extended Logger template
+------------------------
+package com.oksijen.services.voiceroamingpacks.common;
+
+import org.apache.log4j.Logger;
+
+import com.oksijen.sdf.common.service.SDFClassType;
+import com.oksijen.sdf.common.service.impl.ClassDescription;
+import com.oksijen.services.common.utility.v01_00_16.logger.MessageFormatter;
+import com.oksijen.services.common.utility.v01_00_16.logger.impl.SdfServiceLogger;
+
+/**
+ * @author dkalfa
+ *
+ */
+@ClassDescription(type = SDFClassType.USED_CLASS, version = "1.0.0", short_description = "short VrpServiceLogger", long_description = "long VrpServiceLogger")
+public class VrpServiceLogger extends SdfServiceLogger {
+    
+    public VrpServiceLogger(String projectName, Logger logger, String sdfLogTraceId) {
+        super(projectName, logger, sdfLogTraceId);
+    }
+    
+    @Override
+    public void error(String logText, Object... params) {
+        logger.error(constructLogTextForErrorLevel(logText, null, params));
+    }
+    
+    @Override
+    public void error(String logText, Throwable t, Object... params) {
+        logger.error(constructLogTextForErrorLevel(logText, t, params));
+    }
+    
+    public void error(Throwable t) {
+        logger.error(constructLogTextForErrorLevel("", t));
+    }
+    
+    private String constructLogTextForErrorLevel(String logText, Throwable t, Object... params) {
+        StringBuilder messageBuilder = new StringBuilder(this.prefix);
+        String simpleClassName = null;
+        String messageCause = null;
+        if (t != null) {
+            StackTraceElement stackTrace = t.getStackTrace()[0];
+            messageBuilder.append("[")
+                          .append(getSimpleClassName(stackTrace.getClassName()))
+                          .append("][")
+                          .append(stackTrace.getMethodName())
+                          .append("][")
+                          .append(stackTrace.getLineNumber())
+                          .append("]")
+                          .append(sdfLogTraceId)
+                          .append(": ");
+            
+            simpleClassName = t.getClass().getSimpleName();
+            messageCause = t.getMessage();
+            
+            messageBuilder.append("[Error]: ").append(simpleClassName);
+            messageBuilder.append(", [Cause]: ").append(messageCause);
+        }
+        messageBuilder.append(MessageFormatter.arrayFormat(logText, params));
+        
+        return messageBuilder.toString();
+    }
+    
+    private String getSimpleClassName(String fullClassName) {
+        
+        if (fullClassName != null) {
+            int index = fullClassName.lastIndexOf(".");
+            if (index > -1) {
+                return fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
+            }
+        }
+        return fullClassName;
+    }
+}
