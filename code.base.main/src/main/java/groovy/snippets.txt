@@ -2,6 +2,38 @@ Running a groovy class
 ----------------------
 cmd-> groovy -cp "junit-4.8.1.jar;spock-core-0.5-groovy-1.8.jar" HelloSpock
 
+Running groovy code on cmd/prompt
+---------------------------------
+cmd->groovy -e "println 'Hi'"
+
+Selecting/matching words(regular expression)
+--------------------------------------------
+// selecting words
+finder = '23rd Psalm' =~ /\b([A-Za-z]+)\b/   // usually best
+println finder[0][0]
+
+Matching Multiple Lines
+-----------------------
+fakedFile = '''
+<html>
+<head><title>Chapter 1 Title</title></head>
+<body>
+<h1>Chapter 1: Some Heading</h1>
+A paragraph.
+</body>
+</html>
+'''
+
+stripExpectations = '''
+Chapter 1 Title
+
+Chapter 1: Some Heading
+A paragraph.
+'''.trim()
+
+stripped = fakedFile.replaceAll(/(?m)<.*?>/,'').trim()
+assert stripExpectations == stripped
+
 Printing Date
 -------------
 import java.text.DateFormat

@@ -1,4 +1,109 @@
+fakedFile = '''
+<html>
+<head><title>Chapter 1 Title</title></head>
+<body>
+<h1>Chapter 1: Some Heading</h1>
+A paragraph.
+</body>
+</html>
+'''
 
+stripExpectations = '''
+Chapter 1 Title
+
+Chapter 1: Some Heading
+A paragraph.
+'''.trim()
+
+stripped = fakedFile.replaceAll(/(?m)<.*?>/,'').trim()
+assert stripExpectations == stripped
+
+pattern = '''(?x)
+	  (                    # capture in $1
+		  Chapter          # text string
+		  \\s+             # mandatory whitespace
+		  \\d+             # decimal number
+		  \\s*             # optional whitespace
+		  :                # a real colon
+		  . *              # anything not a newline till end of line
+	  )
+'''
+
+headerfyExpectations = '''
+Chapter 1 Title
+
+<H1>Chapter 1: Some Heading</H1>
+A paragraph.
+'''.trim()
+
+headerfied = stripped.replaceAll(pattern, '<H1>$1</H1>')
+assert headerfyExpectations == headerfied
+
+//words = '''
+//	deniz
+//	kalfa
+//'''
+//
+//println words.split('\n').findAll { it.trim() }.collect { it.trim() }
+
+//// Groovy splits src and dest to avoid this problem
+//src = 'Go this way'
+//dst = src.replaceFirst('this', 'that')
+//assert dst == 'Go that way'
+//
+//// extract basename
+//src = 'c:/some/path/file.ext'
+//dst = src.replaceFirst('^.*/', '')
+//assert dst == 'file.ext'
+
+//string = 'And little lambs eat ivy'
+//// Greedy version
+//parts = string =~ /(.*)(l[^s]*s)(.*)/
+//(1..parts.groupCount()).each{ print "(${parts[0][it]}) " }; print '\n'
+//// (And little ) (lambs) ( eat ivy)
+//
+//// Reluctant version
+//parts = string =~ /(.*?)(l[^s]*s)(.*)/
+//(1..parts.groupCount()).each{ print "(${parts[0][it]}) " }; print '\n'
+//// (And ) (little lambs) ( eat ivy)
+
+//digits = "123456789"
+//nonlap = digits =~ /\d{3}/
+//assert nonlap.count == 3
+//print 'Non-overlapping:  '
+//(0..<nonlap.count).each{ print nonlap[it] + ' ' }; print '\n'
+//print 'Overlapping:      '
+//yeslap = (digits =~ /(?=(\d{3}))/)
+//assert yeslap.count == 7
+//(0..<yeslap.count).each{ print yeslap[it][1] + ' ' }; print '\n'
+
+//string = 'good food'
+//println string.replaceFirst(/o*/, 'e')
+//println string.replaceAll(/o*/, 'e')
+//println string.replace(/o*/, 'e')
+//println 'o*o*'.replace(/o*/, 'e')
+
+//meadow1 = 'cow grass butterflies Ovine'
+//meadow2 = 'goat sheep flowers dog'
+//// pattern strings can benefit from 'slashy' quotes
+//partial = /sheep/
+//full = /.*sheep.*/
+//
+//// find operator
+//assert !(meadow1 =~ partial)
+//assert meadow2 =~ partial
+//finder = (meadow2 =~ partial)
+//// underneath Groovy sugar coating is Java implementation
+//assert finder instanceof java.util.regex.Matcher
+//
+//// match operator
+//assert !(meadow1 ==~ full)
+//assert meadow2 ==~ full
+//matcher = (meadow2 ==~ full)
+//// under the covers is just a boolean
+//assert matcher instanceof Boolean
+//
+//assert meadow1 =~ /(?i)\bovines?\b/ // (?i) == case flag
 
 //foodColor = [Apple:'red', Carrot:'orange', Banana:'yellow', Cherry:'black']
 //count = [:]
