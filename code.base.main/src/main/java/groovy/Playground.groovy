@@ -1,15 +1,136 @@
-foodColor = [
-	Apple: 'read',
-	Banana: 'yellow',
-	Lemon: 'yellow',
-	Carrot: 'orange'
-]
 
-foodColorsSortedByFood = []
-foodColor.keySet().sort().each { k -> foodColorsSortedByFood << foodColor[k] }
-assert foodColorsSortedByFood == ["red", "orange", "yellow"]
-foodColorsSortedByFood.each { println it }
 
+//foodColor = [Apple:'red', Carrot:'orange', Banana:'yellow', Cherry:'black']
+//count = [:]
+//letters = []
+//foodColor.values().each{ letters.addAll((it as String[])) }
+//letters.each{ if (count.containsKey(it)) count[it] += 1 else count[it] = 1 }
+//assert count == ["o":3, "d":1, "k":1, "w":2, "r":2, "c":1, "l":5, "g":1, "b":1, "a":2, "y":2, "n":1, "e":4]
+
+
+//hash = [:]
+//println hash.capacity()
+//
+//hash = new HashMap()
+//println hash.capacity()
+//
+//('A'..'Z').each { hash[it] = it }
+//println hash.size()
+//println hash.capacity()
+//
+//hash = new HashMap(100)
+//hash = new HashMap(100, 0.8f)
+
+//colors1 = ['yellow', 'orange', 'red']
+//colors2 = ['yellow']
+//
+//same = colors1.intersect(colors2)
+//assert same == ['yellow']
+//
+//diff = colors1 - colors2
+//assert diff == ['orange', 'red']
+
+//foodColor = [Apple:'red', Carrot:'orange', Banana:'yellow', Cherry:'black']
+//foodColor['Lemon'] = 'yellow'
+//citrusColor = [Lemon:'yellow', Orange: 'orange', Lime: 'green']
+//println foodColor
+//println citrusColor
+//
+//common = foodColor.keySet().intersect(citrusColor.keySet())
+//println "common: $common"
+//
+//foodButNotCitrus = foodColor.keySet() - citrusColor.keySet()
+//assert foodButNotCitrus.sort() == [ 'Apple', 'Banana', 'Carrot', 'Cherry']
+
+//def letters = 'A'..'Z'
+//for(letter in letters) {
+//	println letter
+//}
+
+//def letters = 'A'..'Z'
+//letters.eachWithIndex { letter, index -> 
+//	println "$index $letter"
+//}
+
+//println 'A' in 'A'..'Z'
+
+//foodColor = [Apple:'red', Carrot:'orange', Banana:'yellow', Cherry:'black']
+//
+//drinkColor = [Galliano: 'yellow', 'Mai Tai': 'blue']
+//ingestedColor = [:]
+//ingestedColor.putAll(drinkColor)
+//ingestedColor.putAll(foodColor)
+//
+//totalColors = ingestedColor.values().sort().unique()
+//assert totalColors == ['black', 'blue', 'orange', 'red', 'yellow']
+
+
+//foodColor = [Apple:'red', Carrot:'orange', Banana:'yellow', Cherry:'black']
+//assert foodColor.keySet().sort() == ["Apple", "Banana", "Carrot", "Cherry"]
+//assert foodColor.values().sort() == ['black', 'orange', 'red', 'yellow']
+//assert foodColor.values().sort{it.size()} == ["red", "black", "orange", "yellow"]
+
+//foods = ['apple', 'banana']
+//str = foods.join(', ')
+//println str
+
+
+//surname = [Mickey: 'Mantle', Babe: 'Ruth']
+//
+//firstName = [:]
+//surname.each { entry -> firstName[entry.value] = entry.key }
+//firstName.each { entry -> println "$entry.key ${entry.value}" }
+
+//surname = [Mickey: 'Mantle', Babe: 'Ruth']
+//println surname.findAll { it.value == 'Mantle' }.collect { it.key }
+
+//foodsOfColor = [Yellow: ['Banana', 'Lemon'], Green: ['Apple']]
+//foodsOfColor['Green'] += 'Melon'
+//assert foodsOfColor == [Green: ['Apple', 'Melon'], Yellow: ['Banana', 'Lemon']]
+
+//foodColor = new LinkedHashMap()
+//foodColor['Banana'] = 'Yellow'
+//foodColor['Apple'] = 'Green'
+//foodColor['Lemon'] = 'Yellow'
+//
+//foodColor.keySet().each { key -> println key }
+
+//hash = [a:1, b:2, c:3]
+//println hash
+//hash.each {key, value -> println "$key => $value"}
+
+//fakedInput = '''
+//From: someone@somewhere.com
+//From: someone@spam.com
+//From: someone@somewhere.com
+//'''
+//
+//from = [:]
+//fakedInput.split('\n').each{
+//	matcher = (it =~ /^From:\s+([^\s>]*)/)
+//	if (matcher.matches()) {
+//		sender = matcher[0][1]
+//		if (from.containsKey(sender)) from[sender] += 1
+//		else from[sender] = 1
+//	}
+//}
+//
+//// More useful to sort by number of received mail by person
+//from.entrySet().sort {a, b -> b.value <=> a.value }.each { entry -> 
+//	println "${entry.key}: ${entry.value}"
+//}
+
+//foodColor = [
+//	Apple: 'read',
+//	Banana: 'yellow',
+//	Lemon: 'yellow',
+//	Carrot: 'orange'
+//]
+//
+//foodColorsSortedByFood = []
+//foodColor.keySet().sort().each { k -> foodColorsSortedByFood << foodColor[k] }
+//foodColorsSortedByFood.each { println it }
+//assert foodColorsSortedByFood == ["red", "yellow", "orange", "yellow"]
 
 //hash = [:]
 //hash.each { key, value ->
