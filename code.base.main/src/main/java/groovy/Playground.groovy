@@ -1,3 +1,80 @@
+foodColor = [
+	Apple: 'read',
+	Banana: 'yellow',
+	Lemon: 'yellow',
+	Carrot: 'orange'
+]
+
+foodColorsSortedByFood = []
+foodColor.keySet().sort().each { k -> foodColorsSortedByFood << foodColor[k] }
+assert foodColorsSortedByFood == ["red", "orange", "yellow"]
+foodColorsSortedByFood.each { println it }
+
+
+//hash = [:]
+//hash.each { key, value ->
+//	// do something with key and value
+//}
+//
+//hash.each { entry ->
+//	// do something with entry
+//}
+//
+//hash.keySet().each { key ->
+//	// do something with key
+//}
+
+//foodColor = [
+//	Apple: 'read',
+//	Banana: 'yellow',
+//	Lemon: 'yellow',
+//	Carrot: 'orange'
+//]
+//assert foodColor.size() == 4
+//foodColor.remove('Banana')
+//assert foodColor.size() == 3
+
+
+//foodColor = [
+//	Apple: 'read',
+//	Banana: 'yellow',
+//	Lemon: 'yellow',
+//	Carrot: 'orange'
+//]
+//
+//assert ['Banana', 'Martini'].collect{ foodColor.containsKey(it)?'food':'drink' } == [ 'food', 'drink' ]
+//
+//age = [Toddler:3, Unborn:0, Phantasm:null]
+//['Toddler', 'Unborn', 'Phantasm', 'Relic'].each{ key ->
+//	print "$key: "
+//	if (age.containsKey(key)) print 'has key '
+//	if (age.containsKey(key) && age[key]!=null) print 'non-null '
+//	if (age.containsKey(key) && age[key]) print 'true '
+//	println ''
+//}
+
+//foodColor = [
+//	Apple: 'read',
+//	Banana: 'yellow',
+//	Lemon: 'yellow',
+//	Carrot: 'orange'
+//]
+//
+//println foodColor['Lemon']
+//foodColor['Lemon'] = 'green'
+//println foodColor['Lemon']
+//
+//println foodColor.size()
+//foodColor['Raspberry'] = 'pink'
+//foodColor['Raspberry'] += 'pink'
+//println foodColor.size()
+//println foodColor['Raspberry']
+
+
+//age = [Nat: 24, Jules: 25, Josh: 17]
+//println age['Nat']
+//println age.'Nat'
+
 //import java.text.DateFormatSymbols as Symbols
 //items = new Symbols(Locale.ENGLISH).shortWeekdays.toList()[1..7]
 //assert items == ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]

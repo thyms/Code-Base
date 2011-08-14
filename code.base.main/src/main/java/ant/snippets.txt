@@ -1,0 +1,68 @@
+Sample Project Directory Structure
+----------------------------------
+/SampleProject
+  /src
+    /main                                              
+      /com/tddinaction/.../ProductionCode.java     
+    /test                                        
+      /com/tddinaction/.../TestCode.java      
+  /bin                          
+    /classes-main              
+      /com/tddinaction/...    
+    /classes-test              
+      /com/tddinaction/...
+  /lib                          
+    /main                       
+      commons-logging.jar     
+    /test                       
+      junit.jar                
+  build.xml
+
+Sample Build.xml
+----------------
+<project name="SampleProject" default="test">
+    <path id="classpath.main">                              
+        <fileset dir="lib/main" includes="**/*.jar" />    
+    </path>                                                   
+    <path id="classpath.test">                              
+        <path refid="classpath.main" />                     
+        <pathelement location="bin/classes-main" />        
+        <fileset dir="lib/test" includes="**/*.jar" />     
+    </path>                                                    
+    <target name="clean">     
+        <delete failonerror="false" includeemptydirs="yes">
+            <fileset dir="bin" includes="classes-*/**" />
+		</delete>
+    </target>
+    <target name="compile">      
+        <mkdir dir="bin/classes-main" />
+        <javac srcdir="src/main" destdir="bin/classes-main" debug="on" classpathref="classpath.main" />     
+        <mkdir dir="bin/classes-test" />
+        <javac srcdir="src/test" destdir="bin/classes-test" debug="on" classpathref="classpath.test" />     
+    </target>
+    
+    <property name="junit.data" value="reports/junit/data" />
+    <property name="junit.html" value="reports/junit/html" />
+    
+    <target name="test" depends="-test-run, -test-report" />    
+    <target name="-test-run" depends="compile">                  
+        <mkdir dir="${junit.data}" />
+        <junit printsummary="yes" fork="true" haltonfailure="no">
+            <classpath>
+                <path refid="classpath.test" />
+                <pathelement location="bin/classes-test" />
+            </classpath>
+            <formatter type="xml" />
+            <batchtest haltonfailure="no" todir="${junit.data}">
+                <fileset dir="src/test" includes="**/Test*.java" />
+            </batchtest>
+        </junit>
+    </target>
+    <target name="-test-report" depends="-test-run">    
+        <mkdir dir="${junit.html}" />
+        <junitreport todir="${junit.data}">     
+            <fileset dir="${junit.data}" includes="TEST-*.xml" />
+            <report format="frames" todir="${junit.html}" />    
+        </junitreport>
+    </target>
+</project>

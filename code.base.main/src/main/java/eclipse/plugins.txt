@@ -1,6 +1,6 @@
 - Eclipse Color Theme
 - EGit
-- Google Plugin
+- Google App Engine Plugin
 - Groovy Plugin
 - Market Place Plugin
 - Maven/M2eclipse Plugin

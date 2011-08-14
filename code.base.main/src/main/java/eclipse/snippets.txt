@@ -1,0 +1,4 @@
+Chaging Editor Font Size
+------------------------
+Window->Preferences->General->Appearance->Colors and Fonts->Basic->Text Font
+
