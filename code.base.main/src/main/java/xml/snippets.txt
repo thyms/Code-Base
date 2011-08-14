@@ -1,0 +1,7 @@
+CDATA, Escaping Xml strings in Xml
+----------------------------------
+<root>
+<![CDATA[
+<name><first>Bill</first><last>Gates</last></name>
+]]>
+</root>
