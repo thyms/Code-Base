@@ -1,3 +1,16 @@
+Utility method for private field dependency injection
+-----------------------------------------------------
+public static void injectField(Object target, String fieldName, 
+                               Object dep) throws Exception {
+    Field field = target.getClass().getDeclaredField(fieldName);
+    Annotation ejb = field.getAnnotation(EJB.class);               
+    Annotation res = field.getAnnotation(Resource.class);          
+    boolean wasFound = (ejb != null || res != null);               
+    assertTrue("Missing @EJB or @Resource annotation", wasFound);  
+    field.setAccessible(true);    
+    field.set(target, dep);       
+}
+
 Spring sql script execute method
 --------------------------------
 SimpleJdbcTestUtils.executeSqlScript()
