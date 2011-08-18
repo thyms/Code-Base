@@ -1,43 +1,48 @@
-fakedFile = '''
-<html>
-<head><title>Chapter 1 Title</title></head>
-<body>
-<h1>Chapter 1: Some Heading</h1>
-A paragraph.
-</body>
-</html>
-'''
+inputPath = 'src/test/resources/temp/temp.txt'
 
-stripExpectations = '''
-Chapter 1 Title
+inputFile = new File(inputPath)
+println inputFile.text.size()
 
-Chapter 1: Some Heading
-A paragraph.
-'''.trim()
-
-stripped = fakedFile.replaceAll(/(?m)<.*?>/,'').trim()
-assert stripExpectations == stripped
-
-pattern = '''(?x)
-	  (                    # capture in $1
-		  Chapter          # text string
-		  \\s+             # mandatory whitespace
-		  \\d+             # decimal number
-		  \\s*             # optional whitespace
-		  :                # a real colon
-		  . *              # anything not a newline till end of line
-	  )
-'''
-
-headerfyExpectations = '''
-Chapter 1 Title
-
-<H1>Chapter 1: Some Heading</H1>
-A paragraph.
-'''.trim()
-
-headerfied = stripped.replaceAll(pattern, '<H1>$1</H1>')
-assert headerfyExpectations == headerfied
+//fakedFile = '''
+//<html>
+//<head><title>Chapter 1 Title</title></head>
+//<body>
+//<h1>Chapter 1: Some Heading</h1>
+//A paragraph.
+//</body>
+//</html>
+//'''
+//
+//stripExpectations = '''
+//Chapter 1 Title
+//
+//Chapter 1: Some Heading
+//A paragraph.
+//'''.trim()
+//
+//stripped = fakedFile.replaceAll(/(?m)<.*?>/,'').trim()
+//assert stripExpectations == stripped
+//
+//pattern = '''(?x)
+//	  (                    # capture in $1
+//		  Chapter          # text string
+//		  \\s+             # mandatory whitespace
+//		  \\d+             # decimal number
+//		  \\s*             # optional whitespace
+//		  :                # a real colon
+//		  . *              # anything not a newline till end of line
+//	  )
+//'''
+//
+//headerfyExpectations = '''
+//Chapter 1 Title
+//
+//<H1>Chapter 1: Some Heading</H1>
+//A paragraph.
+//'''.trim()
+//
+//headerfied = stripped.replaceAll(pattern, '<H1>$1</H1>')
+//assert headerfyExpectations == headerfied
 
 //words = '''
 //	deniz

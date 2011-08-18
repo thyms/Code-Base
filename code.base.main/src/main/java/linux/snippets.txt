@@ -2,6 +2,10 @@ $mkdir newDirectory
 $rm -f anyFile.txt
 $rm -rf anyFolder
 
+IP-Domain Name mapping in Linux
+-------------------------------
+modify /etc/hosts file.
+
 Finding specific processes
 --------------------------
 $ps -ef | grep java

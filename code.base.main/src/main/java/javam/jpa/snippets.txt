@@ -1,0 +1,23 @@
+Common EntityManager methods[JPA]
+----------------------------------------------------------
+package javax.persistence;
+public interface EntityManager {
+    // methods for creating finder queries using EJB-QL, SQL, or 
+    // using a named query configured externally
+    Query createQuery(String ejbqlString);
+    Query createNativeQuery(String sqlString);
+    Query createNamedQuery(String name);
+    
+    // method for finding an entity by its class and primary key
+    T find(Class<T> entityClass, Object primaryKey);
+        
+    // methods for saving, loading, deleting, and updating entities
+    void persist(Object entity);
+    void refresh(Object entity);
+    void remove(Object entity);
+    
+    T merge(T entity);
+    // method for synchronizing the persistence context to database
+    void flush();
+    // some less common methods omitted for brevity...
+}

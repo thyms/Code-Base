@@ -387,3 +387,574 @@ IS
 END sms_online_sdf;
 
     
+
+How do I create a connection to database? 
+------------------------------------------------------------------------------
+package org.kodejava.sample.java.sql;
+ 
+import java.sql.DriverManager;
+import java.sql.Connection;
+ 
+public class ConnectionSample
+{
+    // Below is the format of jdbc url for MySql database.
+    public static final String URL = 
+        "jdbc:mysql://localhost/testdb";
+ 
+    // The username for connecting to the database
+    public static final String USERNAME = "root";
+ 
+    // The password for connecting to the database
+    public static final String PASSWORD = "";
+ 
+    public static void main(String[] args) throws Exception
+    {
+        Connection connection = null;
+        try
+        {
+            // Register a database jdbc driver to be used by 
+            // our program. In this example I choose a MySQL 
+            // driver. 
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            // Get the connection object from the driver manager 
+            // by passing the url of our database, username and 
+            // the password.
+            connection = DriverManager.getConnection(URL, 
+                USERNAME, PASSWORD);
+ 
+            // Do what ever you want to do with the connection 
+            // object, such as reading some records from database, 
+            // updating or deleting a row. But don't for get the 
+            // close the connection right after you've finished 
+            // using it.
+        } finally
+        {
+            if (connection != null)
+            {
+                connection.close();
+            }
+        }
+    }
+}
+
+
+How do I execute stored procedure?
+------------------------------------------------------------------------------
+package org.kodejava.example.sql;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class CallableStatementDemo {
+    private static String url = "jdbc:oracle:thin:@localhost:1521:xe";
+    private static String username = "kodejava";
+    private static String password = "welcome";
+
+    public static void main(String[] args) throws Exception {
+        Connection conn = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, username, password);
+
+            //
+            // Create a CallableStatement to execute the CREATE_USERS procedure
+            // 
+            CallableStatement stmt = conn.prepareCall("{call CREATE_USERS (?, ?, ?, ?, ?, ?)}");
+
+            //
+            // Defines all the required parameter values.
+            // 
+            stmt.setString(1, "kodejava");
+            stmt.setString(2, "welcome");
+            stmt.setString(3, "Kode");
+            stmt.setString(4, "Java");
+            stmt.setString(5, "Denpasar - Bali");
+            stmt.setString(6, "webmaster[at]kodejava[.]org");
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+            }
+        }
+    }
+}
+
+CREATE OR REPLACE PROCEDURE CREATE_USERS (username IN VARCHAR2, password IN VARCHAR2, firstName IN VARCHAR2, lastName IN VARCHAR2, address IN VARCHAR2, email IN VARCHAR2) AS
+BEGIN
+    INSERT INTO users (username, password, first_name, last_name, address, email) VALUES (username, password, firstName, lastName, address, email);
+END CREATE_USERS;
+
+------------------------------------------------------------------------------
+
+
+How do I query records from table?
+------------------------------------------------------------------------------
+package org.kodejava.sample.java.sql;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
+public class ResultSetExample
+{
+    public static void main(String[] args) throws Exception
+    {
+        Connection connection = null;
+        try
+        {
+            // Here we load the MySQL database Driver class
+            Class.forName("com.mysql.jdbc.Driver");
+
+            // Define properties for connecting to database such as
+            // database jdbc url, username and password
+            String url = "jdbc:mysql://localhost/sampledb";
+            String username = "root";
+            String password = "";
+
+            // Get a connection to database.
+            connection = DriverManager.getConnection(url, username, password);
+            // Create a statment object.
+            Statement statement = connection.createStatement();
+            // Executes a query command to select isbn and the book title
+            // from books table. The execute query returns a ResultSet object
+            // which is the result of our query execution.
+            ResultSet books = statement.executeQuery("SELECT isbn, title, published_date FROM books");
+
+            // To get the value returned by the statement.executeQuery we need
+            // to iterate the books object until the last items.
+            while (books.next())
+            {
+                // To get the value from the ResultSet object we can call
+                // a method that correspond to the data type of the column in
+                // database table. In the example below we call
+                // books.getString("isbn") to get the book's ISBN information.
+                System.out.println(books.getString("isbn") + "; "
+                        + books.getString("title") + "; "
+                        + books.getDate("published_date"));
+            }
+        } finally {
+            if (connection != null && !connection.isClosed())
+            {
+                // We've done the business with the connection object, so
+                // let's close it.
+                connection.close();
+            }
+        }
+    }
+}
+
+
+
+How do I delete record from table?
+------------------------------------------------------------------------------
+package org.kodejava.example.sql;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+public class DeleteRecordExample
+{
+    public static void main(String[] args) throws Exception
+    {
+        // This is our connection url to MySQL database, where jdbc is the prefix
+        // for all jdbc connection. The mysql sub telling that we are using MySQL
+        // database. Localhost is where our database is reside and sampledb is 
+        // our database name.
+        String url = "jdbc:mysql://localhost/sampledb";
+        
+        // To connect to a database we will need a user and password for the 
+        // database server to allow us to manipulate its databse.
+        String username = "root";
+        String password = "";
+                
+        Connection connection = null;
+        try
+        {
+            // Load the jdbc driver class
+            Class.forName("com.mysql.jdbc.Driver");
+            // Then we ask a connection from the DriverManager by passing the 
+            // connection URL and the password.
+            connection = DriverManager.getConnection(url, username, password);
+            
+            // To delete records from tables we create an SQL delete command.
+            // The question mark that we used in the where clause will be the
+            // holder of value that will be assigned by PreparedStatement class.
+            String sql = "DELETE FROM users WHERE user_id = ?";
+            int userId = 2;
+            
+            // Create a statement object. We use PreparedStatement here.
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            // Pass a value of a userId that will tell the database which
+            // records in the database to be deleted. Remember that when
+            // using a statement object the indext parameter is start from
+            // 1 not 0 as in the Java array data type index.
+            statement.setInt(1, userId);
+            
+            // Tell the statement to execute the command. The executeUpdate()
+            // method for a delete command returns number of records deleted
+            // as the command executed in the database. If no records was
+            // deleted it will simply return 0
+            int rows = statement.executeUpdate();
+            
+            System.out.println(rows + " record(s) deleted.");
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally 
+        {
+            if (connection != null && !connection.isClosed())
+            {
+                connection.close();
+            }
+        }
+    }
+}
+
+
+
+How do I insert a record into database table?
+------------------------------------------------------------------------------
+package org.kodejava.sample.java.sql;
+ 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.SQLException;
+ 
+public class SelectStatementSample
+{
+    public static void main(String[] args) throws Exception
+    {
+        Connection connection = null;
+        try
+        {
+            // Register MySQL JDBC driver to be known by 
+            // the DriverManager object.
+            Class.forName("com.mysql.jdbc.Driver");
+ 
+            // Get a connection to database. We prepare the 
+            // connection information here such as database 
+            // url, user and password.
+            String url = "jdbc:mysql://localhost/testdb";
+            String user = "root";
+            String password = "";
+            connection = DriverManager.getConnection(url, 
+                user, password);
+ 
+            // Create a statement object instance from the 
+            // connection
+            Statement stmt = connection.createStatement();
+ 
+            // We are going to execute an insert statement. 
+            // First you have to create a table that has an 
+            // ID, NAME and ADDRESS field. For ID you can use 
+            // an auto number, while NAME and ADDRESS are 
+            // VARCHAR fields.
+            String sql = "INSERT INTO users (name, address) " +
+                    "VALUES ('Foo Bar', 'Some Street')";
+ 
+            // Call an execute method in the statement object 
+            // and passed the sql or query string to it.
+            stmt.execute(sql);
+ 
+            // After this statement is executed you'll have a 
+            // record in your users table.
+        } catch (ClassNotFoundException e)
+        {
+            System.err.println("Could not load database driver!");
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            if (connection != null)
+            {
+                connection.close();
+            }
+        }
+    }
+}
+
+
+
+How do I know number of rows affected when updating data in database table?
+------------------------------------------------------------------------------
+package org.kodejava.example.sql;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+public class HowManyRowExample {
+        public static void main(String[] args) throws Exception {
+                Connection connection = null;
+                try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        connection = DriverManager.getConnection(
+                                        "jdbc:mysql://localhost/bookstore", "root", "");
+                        
+                        PreparedStatement ps = connection.prepareStatement(
+                                        "UPDATE books SET title = ? WHERE id = ?");
+                        ps.setString(1, "Java Tutorial 3rd Edition");
+                        ps.setInt(2, 1);
+                        int rows = ps.executeUpdate();
+                        
+                        System.out.printf("%d row(s) updated!", rows);
+                } finally {
+                        if (connection != null && !connection.isClosed()) {
+                                connection.close();
+                        }
+                }
+        }
+}
+
+
+How do I make updates in Updatable ResultSet?
+------------------------------------------------------------------------------
+package org.kodejava.example.sql;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class UpdatableResultSetDemo {
+
+    public static void main(String[] args) {
+        Connection connection = null;
+
+        try {
+            //
+            // Routine to get a connection object to database.
+            //
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/testdb",
+                    "root", "");
+
+            //
+            // Create an updatable resultset. It means that instead of using a
+            // separate sql comment to update the data we can update it directly
+            // in the resultset object.
+            //
+            // What makes it updatable is because when creating the statement we
+            // ask the connection object to create statement with CONCUR_UPDATABLE.
+            // The updatable doesn't need to be TYPE_SCROLL_SENSITIVE, but adding
+            // this parameter to the statement enable us to go back and forth to
+            // update the data.
+            //
+            Statement statement = connection.createStatement(
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+            String query = "SELECT id, product_code, product_name, quantity, price FROM products";
+            ResultSet uprs = statement.executeQuery(query);
+
+            System.out.println("id\tcode\tname\tquantity\tquantity\tprice");
+            while (uprs.next()) {
+                System.out.println(uprs.getString("id") + "\t"
+                        + uprs.getString("product_code") + "\t"
+                        + uprs.getString("product_name") + "\t"
+                        + uprs.getInt("quantity") + "\t"
+                        + uprs.getDouble("price"));
+            }
+
+            //
+            // Move to the first row and update the resultset data. After we
+            // update the rowset value we call the updateRow() method to update
+            // the data in the database.
+            //
+            uprs.first();
+            uprs.updateString("product_name", "UML Distilled 3rd Edition");
+            uprs.updateRow();
+
+            //
+            // Move to the next resultset row and delete the row in the resultset
+            // and apply it to the database.
+            //
+            uprs.next();
+            uprs.deleteRow();
+
+            //
+            // Insert a new row in the resultset object with the moveToInsertRow()
+            // method. Supply the information to be inserted and finally call the
+            // insertRow() method to insert record to the database.
+            //
+            uprs.moveToInsertRow();
+            uprs.updateString("product_code", "P0000010");
+            uprs.updateString("product_name", "Data Structures, Algorithms");
+            uprs.updateInt("quantity", 10);
+            uprs.updateDouble("price", 50.99);
+            uprs.insertRow();
+
+            uprs.beforeFirst();
+            System.out.println("id\tcode\tname\tquantity\tquantity\tprice");
+            while (uprs.next()) {
+                System.out.println(uprs.getString("id") + "\t"
+                        + uprs.getString("product_code") + "\t"
+                        + uprs.getString("product_name") + "\t"
+                        + uprs.getInt("quantity") + "\t"
+                        + uprs.getDouble("price"));
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+
+How do I convert java.util.Date to java.sql.Date?
+------------------------------------------------------------------------------
+package org.kodejava.example.sql;
+
+import java.util.Date;
+
+public class UtilDateToSqlDate {
+    public static void main(String[] args) {
+        //
+        // Create a new instance of java.util.Date
+        //
+        java.util.Date date = new Date();
+        
+        //
+        // To covert java.util.Date to java.sql.Date we need to create
+        // an instance of java.sql.Date and pass the long value of 
+        // java.util.Date as the parameter.
+        //
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+        System.out.println("Date    = " + date);
+        System.out.println("SqlDate = " + sqlDate);
+    }
+}
+
+
+How do I create a batch update in JDBC?
+------------------------------------------------------------------------------
+package org.kodejava.example.sql;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class BatchExample {
+    public static void main(String[] args) throws Exception {
+        Connection connection = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/testdb", "root", "");
+            
+            //
+            // Turn of the auto-commit mode
+            //
+            connection.setAutoCommit(false);
+
+            Statement statement = connection.createStatement();
+            
+            //
+            // And some batch to insert some product information into the product table
+            //
+            statement.addBatch("INSERT INTO products (product_code, product_name, quantity, price) VALUE ('P0000006', 'Championship Manager', 10.99, 20)");
+            statement.addBatch("INSERT INTO products (product_code, product_name, quantity, price) VALUE ('P0000007', 'Transport Tycoon Deluxe', 15.99, 19)");
+            statement.addBatch("INSERT INTO products (product_code, product_name, quantity, price) VALUE ('P0000008', 'Rollercoaster Tycoon 3', 5.99, 25)");
+            statement.addBatch("INSERT INTO products (product_code, product_name, quantity, price) VALUE ('P0000009', 'Pro Evolution Soccer', 8.99, 50)");
+
+            //
+            // To execute a batch command we must call the executeBatch() method.
+            //
+            int[] updateCounts = statement.executeBatch();
+            
+            //
+            // Commit our transcation
+            //
+            connection.commit();
+        } catch (SQLException e) {
+            if (connection != null) {
+                connection.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
+}
+
+
+How do I commit or rollback transaction in JDBC?
+------------------------------------------------------------------------------
+package org.kodejava.example.sql;
+
+import java.sql.*;
+
+public class TransactionRollbackExample {
+    public static void main(String[] args) throws Exception {
+        String url = "jdbc:mysql://localhost/testdb";
+        String username = "root";
+        String password = "";
+
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(url, username, password);
+            conn.setAutoCommit(false);
+
+            StringBuilder sb = new StringBuilder("INSERT INTO orders (username, order_date) " +
+                    "VALUES ('javaduke', '2007-12-13')");
+            Statement orderStmt = conn.createStatement();
+            orderStmt.execute(sb.toString(), Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet keys = orderStmt.getGeneratedKeys();
+            int id = 1;
+            while (keys.next()) {
+                id = keys.getInt(1);                
+            }
+
+            String insertDetail = "INSERT INTO order_details (order_id, product_id, quantity, price) " +
+                    "VALUES (?, ?, ?, ?)";
+            PreparedStatement detailStmt = conn.prepareStatement(insertDetail);
+            detailStmt.setInt(1, id);
+            detailStmt.setString(2, "P0000001");
+            detailStmt.setInt(3, 10);
+            detailStmt.setDouble(4, 100);
+            detailStmt.execute();
+
+            //
+            // Commit transaction to mark it as a success database operation
+            //
+            conn.commit();
+            System.out.println("Transaction commit...");
+        } catch (SQLException e) {
+            //
+            // Rollback any database transaction due to exception occured
+            //
+            if (conn != null) {
+                conn.rollback();
+                System.out.println("Connection rollback...");
+            }
+            e.printStackTrace();
+        } finally {
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+            }
+        }
+    }
+}
+    
