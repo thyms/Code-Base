@@ -95,8 +95,6 @@ public class SqlScriptExecutor {
         }
     }
     
-
-    
     private static void executeCommand(String command) throws Exception {
     	// getInstance().getJdbcTemplate().execute(command);
     }

@@ -21,7 +21,7 @@ class SqlScriptExecutorShould extends Specification {
 		def connection = DriverManager.getConnection("jdbc:h2:mem:test", "sa", "sa")
 		def statement = connection.createStatement()
 		
-		def file = new File("src/test/resources/script/db.sql")
+		def file = new File("src/test/resources/script/database_script_h2_001.sql")
 		def sqlScriptExecutor = new SqlScriptExecutor(statement)
 		sqlScriptExecutor.execute(file)
 		

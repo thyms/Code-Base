@@ -18,7 +18,7 @@ class SqlExecuterShould extends Specification {
 	def "executer given sql script."() {
 		setup:
 		Sql sql = Sql.newInstance('jdbc:h2:mem:test', 'sa', 'sa', 'org.h2.Driver')
-		def sqlFilePath = "src/test/resources/script/database_script_h2.sql" 
+		def sqlFilePath = "src/test/resources/script/database_script_h2_002.sql" 
 				
 		SqlExecuter sqlExecuter = new SqlExecuter()
 	    sqlExecuter.setSrc(new File(sqlFilePath));
