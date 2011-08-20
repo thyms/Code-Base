@@ -1,7 +1,12 @@
-inputPath = 'src/test/resources/temp/temp.txt'
-
-inputFile = new File(inputPath)
-println inputFile.text.size()
+		FileReader fileReader1 = new FileReader("src/main/resources/temp/temp_read.txt");
+		LineNumberReader lnr = new LineNumberReader(fileReader1);
+		
+		String line = "";
+		while ((line = lnr.readLine()) != null) {
+			System.out.println("Line Number " + lnr.getLineNumber() + ": " + line);
+		}
+//inputFile = new File(inputPath)
+//println inputFile.text.size()
 
 //fakedFile = '''
 //<html>
@@ -158,7 +163,7 @@ println inputFile.text.size()
 //}
 
 //def letters = 'A'..'Z'
-//letters.eachWithIndex { letter, index -> 
+//letters.eachWithIndex { letter, index ->
 //	println "$index $letter"
 //}
 
@@ -226,7 +231,7 @@ println inputFile.text.size()
 //}
 //
 //// More useful to sort by number of received mail by person
-//from.entrySet().sort {a, b -> b.value <=> a.value }.each { entry -> 
+//from.entrySet().sort {a, b -> b.value <=> a.value }.each { entry ->
 //	println "${entry.key}: ${entry.value}"
 //}
 
@@ -351,9 +356,9 @@ println inputFile.text.size()
 //println result	// true
 
 
-//println line = ''' 
+//println line = '''
 //	fda
-//	
+//
 // a'''.split('\n').findAll { it.trim() }.collect { it.trim() }
 
 //class Employee {
@@ -446,7 +451,7 @@ println inputFile.text.size()
 //def result = marbleColors.find{ it =~ /ee/ }
 
 //marbleColors = ['red', 'green', 'yellow']
-//def result = marbleColors.find{ it =~ /ee/ } 
+//def result = marbleColors.find{ it =~ /ee/ }
 
 //import java.text.DateFormat
 //import java.text.SimpleDateFormat
@@ -612,7 +617,7 @@ println inputFile.text.size()
 //}
 
 //name = 'Deniz'
-//string = /Mom said, $name 
+//string = /Mom said, $name
 //Don't do that.
 ///
 //
@@ -643,9 +648,9 @@ println inputFile.text.size()
 //'I am 17 years old'.replaceAll(/(\d+)(.*)/, {all, age, suf -> println all})
 
 //s1 = 'abc\t def\tghi \n\tx'
-//s1.eachLine { it.replaceAll(/([^\t]*)(\t)(.*)/) { all, pre, tab, suf ->  
+//s1.eachLine { it.replaceAll(/([^\t]*)(\t)(.*)/) { all, pre, tab, suf ->
 //		println all
-//	} 
+//	}
 //}
 
 //debt = 150
@@ -702,26 +707,26 @@ println inputFile.text.size()
 //sb[2..-3] = 'bisc'
 //println sb
 
-//import groovy.xml.DOMBuilder 
-//import org.custommonkey.xmlunit.* 
-//// uncomment below to show what happens when differences occur (1 of 2) 
-////import groovy.xml.dom.DOMCategory 
-//import static groovy.xml.XmlUtil.serialize 
+//import groovy.xml.DOMBuilder
+//import org.custommonkey.xmlunit.*
+//// uncomment below to show what happens when differences occur (1 of 2)
+////import groovy.xml.dom.DOMCategory
+//import static groovy.xml.XmlUtil.serialize
 //
-//def input  = '<root><foo bar="baz"/></root>' 
-//def reader = new StringReader(input) 
-//def doc    = DOMBuilder.parse(reader) 
-//def root   = doc.documentElement 
+//def input  = '<root><foo bar="baz"/></root>'
+//def reader = new StringReader(input)
+//def doc    = DOMBuilder.parse(reader)
+//def root   = doc.documentElement
 //
-//assert doc instanceof org.w3c.dom.Document 
-//assert root instanceof org.w3c.dom.Element 
+//assert doc instanceof org.w3c.dom.Document
+//assert root instanceof org.w3c.dom.Element
 //
-//// uncomment below to show what happens when differences occur (2 of 2) 
-////use(DOMCategory) { 
-////  root.foo.each { it['@bar'] = 'bazza!' } 
-////} 
+//// uncomment below to show what happens when differences occur (2 of 2)
+////use(DOMCategory) {
+////  root.foo.each { it['@bar'] = 'bazza!' }
+////}
 //
-//XMLUnit.setIgnoreWhitespace(true) 
-//def output = serialize(root) 
-//def xmlDiff = new Diff(output, input) 
-//assert xmlDiff.identical() 
+//XMLUnit.setIgnoreWhitespace(true)
+//def output = serialize(root)
+//def xmlDiff = new Diff(output, input)
+//assert xmlDiff.identical()
