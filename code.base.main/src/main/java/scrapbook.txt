@@ -9,7 +9,7 @@ public static void injectField(Object target, String fieldName,
     assertTrue("Missing @EJB or @Resource annotation", wasFound);  
     field.setAccessible(true);    
     field.set(target, dep);       
-} 1
+}
 
 Spring sql script execute method
 --------------------------------
