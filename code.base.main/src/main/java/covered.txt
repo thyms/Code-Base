@@ -1,0 +1,4 @@
+- Logging(log4j,slf4j,log4j.xml,logger,appender,level,etc.)
+- IO(inputStream,outputStream,bufferedStreams,reader,writer,
+bufferedReader,bufferedWriter,scanner.nextLine(),scanner.next(),
+printWriter,channel,lineNumberReader,system.in,system.out,console,mappedByteBuffer)

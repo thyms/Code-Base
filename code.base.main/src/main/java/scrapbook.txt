@@ -1,3 +1,9 @@
+Getting available processors on computer
+----------------------------------------
+int nThreads = Runtime.getRuntime().availableProcessors();
+System.out.println(nThreads);
+
+
 Utility method for private field dependency injection
 -----------------------------------------------------
 public static void injectField(Object target, String fieldName, 

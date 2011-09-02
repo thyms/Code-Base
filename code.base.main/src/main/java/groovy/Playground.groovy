@@ -1,10 +1,13 @@
-		FileReader fileReader1 = new FileReader("src/main/resources/temp/temp_read.txt");
-		LineNumberReader lnr = new LineNumberReader(fileReader1);
-		
-		String line = "";
-		while ((line = lnr.readLine()) != null) {
-			System.out.println("Line Number " + lnr.getLineNumber() + ": " + line);
-		}
+int nThreads = Runtime.getRuntime().availableProcessors();
+System.out.println(nThreads);
+
+//		FileReader fileReader1 = new FileReader("src/main/resources/temp/temp_read.txt");
+//		LineNumberReader lnr = new LineNumberReader(fileReader1);
+//		
+//		String line = "";
+//		while ((line = lnr.readLine()) != null) {
+//			System.out.println("Line Number " + lnr.getLineNumber() + ": " + line);
+//		}
 //inputFile = new File(inputPath)
 //println inputFile.text.size()
 
