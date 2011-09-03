@@ -2,13 +2,11 @@ To Cover
 --------
 - Process vs. Thread
 - synchronized, volatile keywords
-	- Volatile: Ensures that the variable is loaded from memory before each use, and stored to memory after each use.
-	- Synchronized: Ensures that only a single thread can execute a block of code at the same time.
 - Immutability & Defensive Copies(both for setting&getting fields)
 - Threads & Thread Pools(Executor Framework)
 - Runnable(Task), Thread(Worker), Callable(Task), Future(Result), FutureTask
 - BlockingLinkedList, Non-BlockingLinkedList
-- Thread: suspend, resume, sleep, interrupt, stop(deprecated), wait, notify, notifyAll, isAlive, setDaemon, isDaemon
+- Thread: yield, sleep, interrupt, wait, notify, notifyAll, isAlive, setDaemon, isDaemon, stop(deprecated), suspend(deprecated), resume(deprecated)
 - ThreadGroup
 - Fairness, Starvation & Deadlock
 - Selector???
@@ -19,11 +17,60 @@ To Cover
 
 Notes
 -----
+- Volatile: Ensures that the variable is loaded from memory before each use, and stored to memory after each use.
+- Synchronized: Ensures that only a single thread can execute a block of code at the same time.
+Prevents threads from updating the same value simultaneously, so that value won't be in an undefined or inconsistent state.
+While a thread is inside a synchronized method of an object, all other threads that wish to execute this synchronized method 
+or any other synchronized method of the object will have to wait until it gets the lock.
+- A process is an instance of an running application. A process can have multiple threads.
+  A Thread is the execution stream of the process.
+  
+The major difference between threads and processes is 
+
+1.Threads(Light weight Processes) share the address space 
+of the process that created it; processes have their own 
+address
+.2.Threads have direct access to the data segment of its 
+process; processes have their own copy of the data segment 
+of the parent process. 
+3.Threads can directly communicate with other threads of 
+its process; processes must use interprocess communication 
+to communicate with sibling processes.
+ 4.Threads have almost no overhead; processes have 
+considerable overhead.
+5.New threads are easily created; new processes require 
+duplication of the parent process.
+6.Threads can exercise considerable control over threads of 
+the same process; processes can only exercise control over 
+child processes.
+ 7.Changes to the main thread (cancellation, priority 
+change, etc.) may affect the behavior of the other threads 
+of the process; changes to the parent process does not 
+affect child processes.If we consider running a word 
+processing program to be a process, then the auto-save and 
+spell check features that occur in the background are 
+different threads of that process which are all operating 
+on the same data set (your document).
+
+
+Process
+An instance of a program; 
+Executed in own address space
+Independent entity to which system assigns resources CPU time, memory. 
+Cannot access variables or other data structure in another process
+Process communicate using inter-process mechanisms like files, pipes, sockets
+
+Thread
+Is a particular execution path thru a process.
+Multiple threads can share state info of a single process.
+Thread share memory and system resources.
+Can communicate thru shared variables and other memory structures
+Context switching is faster than process.
+
 
 Thread:
-- ... provides concurrent and asynchronous behavior. 
-- ... is a program's path of execution.
-- ... is a single sequential flow of control within a program.
+- ... provides concurrent and asynchronous behavior.
+- ... is an independent path of execution within a program.
 - ... has its own call stack but access shared data.
 - ... has its own memory cache.
 - Each thread of the same program shares the same data area.
@@ -34,11 +81,16 @@ only daemon threads.
 - "Thread Scheduler" can be either "Preemptive" or "Non-Preemptive". 
 Preemptive, each thread has a certain time-slice to execute.
 Non-Preemptive, thread executes until it finishes its task.
+The chosen thread will run until one of the following conditions is true:
+	a higher priority thread becomes Runnable. (Pre-emptive scheduling)
+	it yields, or its run() method exits
+	on systems that support time-slicing, its time allotment has expired
 - In Java, reading and writing a variable is atomic
 Except long and double types, they have to be declared as volatile 
 
 Concurrency:
 - Running several parts of a program or same part in parallel.
+- Executing more than one task at the same time within a program.
 
 Asynchronous:
 - Running part of a program in a asynchronous manner, e.g. responding the request at a later time
@@ -102,6 +154,173 @@ try {
     Thread.currentThread().sleep(10000);
 } catch (InterruptedException e){
 }
+----------------------------------------------------
+----------------------------------------------------
+
+class StackClass {
+
+	private Object[] stackArray;
+	private volatile int topOfStack;
+	StackClass(int capacity) {
+		stackArray = new Object[capacity];
+		topOfStack = -1;
+	}
+	public synchronized Object pop() {
+		System.out.println(Thread.currentThread() + ": popping");
+		while (isEmpty()) {
+			try {
+				System.out.println(Thread.currentThread()
+						+ ": waiting to pop");
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		Object obj = stackArray[topOfStack];
+		stackArray[topOfStack--] = null;
+		System.out.println(Thread.currentThread()
+				+ ": notifying after pop");
+		notify();
+		return obj;
+	}
+	public synchronized void push(Object element) {
+		System.out.println(Thread.currentThread() + ": pushing");
+		while (isFull()) {
+			try {
+				System.out.println(Thread.currentThread()
+						+ ": waiting to push");
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		stackArray[++topOfStack] = element;
+		System.out.println(Thread.currentThread()
+				+ ": notifying after push");
+		notify();
+	}
+	public boolean isFull() {
+		return topOfStack >= stackArray.length - 1;
+	}
+	public boolean isEmpty() {
+		return topOfStack < 0;
+	}
+}
+
+abstract class StackUser extends Thread {
+
+	protected StackClass stack;
+	StackUser(String threadName, StackClass stack) {
+		super(threadName);
+		this.stack = stack;
+		System.out.println(this);
+		setDaemon(true);
+		start();
+	}
+}
+
+class StackPopper extends StackUser { // Stack Popper
+
+	StackPopper(String threadName, StackClass stack) {
+		super(threadName, stack);
+	}
+	public void run() {
+		while (true) {
+			stack.pop();
+		}
+	}
+}
+
+class StackPusher extends StackUser { // Stack Pusher
+
+	StackPusher(String threadName, StackClass stack) {
+		super(threadName, stack);
+	}
+	public void run() {
+		while (true) {
+			stack.push(new Integer(1));
+		}
+	}
+}
+
+public class WaitAndNotifyExample {
+
+	public static void main(String[] args) {
+		StackClass stack = new StackClass(5);
+		new StackPusher("One", stack);
+		new StackPusher("Two", stack);
+		new StackPopper("Three", stack);
+		System.out.println("Main Thread sleeping.");
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Exit from Main Thread.");
+	}
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+public class WorkQueue
+{
+    private final int nThreads;
+    private final PoolWorker[] threads;
+    private final LinkedList queue;
+
+    public WorkQueue(int nThreads)
+    {
+        this.nThreads = nThreads;
+        queue = new LinkedList();
+        threads = new PoolWorker[nThreads];
+
+        for (int i=0; i<nThreads; i++) {
+            threads[i] = new PoolWorker();
+            threads[i].start();
+        }
+    }
+
+    public void execute(Runnable r) {
+        synchronized(queue) {
+            queue.addLast(r);
+            queue.notify();
+        }
+    }
+
+    private class PoolWorker extends Thread {
+        public void run() {
+            Runnable r;
+
+            while (true) {
+                synchronized(queue) {
+                    while (queue.isEmpty()) {
+                        try
+                        {
+                            queue.wait();
+                        }
+                        catch (InterruptedException ignored)
+                        {
+                        }
+                    }
+
+                    r = (Runnable) queue.removeFirst();
+                }
+
+                // If we don't catch RuntimeException, 
+                // the pool could leak threads
+                try {
+                    r.run();
+                }
+                catch (RuntimeException e) {
+                    // You might want to log something here
+                }
+            }
+        }
+    }
+}
+
+
 ----------------------------------------------------
 ----------------------------------------------------
 
@@ -178,7 +397,6 @@ class SimpleThread extends Thread {
 }
 ----------------------------------------------------
 ----------------------------------------------------
-
 
 class ProducerConsumerTest {
     public static void main(String args[]) {
@@ -263,7 +481,42 @@ class CubbyHole {
 ----------------------------------------------------
 ----------------------------------------------------
 
+class RunnableThread implements Runnable {
 
+	Thread runner;
+	public RunnableThread() {
+	}
+	public RunnableThread(String threadName) {
+		runner = new Thread(this, threadName); // (1) Create a new thread.
+		System.out.println(runner.getName());
+		runner.start(); // (2) Start the thread.
+	}
+	public void run() {
+		//Display info about this particular thread
+		System.out.println(Thread.currentThread());
+	}
+}
+
+public class RunnableExample {
+
+	public static void main(String[] args) {
+		Thread thread1 = new Thread(new RunnableThread(), "thread1");
+		Thread thread2 = new Thread(new RunnableThread(), "thread2");
+		RunnableThread thread3 = new RunnableThread("thread3");
+		//Start the threads
+		thread1.start();
+		thread2.start();
+		try {
+			//delay for one second
+			Thread.currentThread().sleep(1000);
+		} catch (InterruptedException e) {
+		}
+		//Display info about the main thread
+		System.out.println(Thread.currentThread());
+	}
+}
+----------------------------------------------------
+----------------------------------------------------
 
 
 THREAD GROUP
@@ -292,11 +545,55 @@ public class CrawledSites {
 ----------------------------------------------------
 
 
+public class A {
+	static void classAction() {
+		synchronized (A.class) { // Synchronized block on class A
+			// …
+		}
+	}
+}
+same as below...
+
+
+public class A {
+	static synchronized  void classAction() {
+			// …
+	}
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
 VOLATILE
 --------
 public class RunnerMisc {
 	private static volatile Customer customer = new Customer();
 	private static volatile int count = 10;
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+JOIN
+----
+public class ThreadJoinDemo {
+
+	public static void main(String[] args) {
+		Thread t1 = new Thread("T1");
+		Thread t2 = new Thread("T2");
+		try {
+			System.out.println("Wait for the child threads to finish.");
+			t1.join();	// Current thread is waiting for t1 to finish its execution
+			if (!t1.isAlive())
+				System.out.println("Thread T1 is not alive.");
+			t2.join(); // Current thread is waiting for t2 to finish its execution
+			if (!t2.isAlive())
+				System.out.println("Thread T2 is not alive.");
+		} catch (InterruptedException e) {
+			System.out.println("Main Thread interrupted.");
+		}
+		System.out.println("Exit from Main Thread.");
+	}
 }
 ----------------------------------------------------
 ----------------------------------------------------
@@ -519,3 +816,42 @@ public class SimpleThread extends Thread {
 ----------------------------------------------------
 ----------------------------------------------------
 
+
+DEADLOCK
+--------
+public class DeadLockExample {
+
+	String o1 = "Lock ";
+	String o2 = "Step ";
+	Thread t1 = (new Thread("Printer1") {
+
+		public void run() {
+			while (true) {
+				synchronized (o1) {
+					synchronized (o2) {
+						System.out.println(o1 + o2);
+					}
+				}
+			}
+		}
+	});
+	Thread t2 = (new Thread("Printer2") {
+
+		public void run() {
+			while (true) {
+				synchronized (o2) {
+					synchronized (o1) {
+						System.out.println(o2 + o1);
+					}
+				}
+			}
+		}
+	});
+	public static void main(String[] args) {
+		DeadLockExample dLock = new DeadLockExample();
+		dLock.t1.start();
+		dLock.t2.start();
+	}
+}
+----------------------------------------------------
+----------------------------------------------------
