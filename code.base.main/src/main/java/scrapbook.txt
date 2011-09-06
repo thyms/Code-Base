@@ -1,3 +1,9 @@
+Getting available processors on computer
+----------------------------------------
+int nThreads = Runtime.getRuntime().availableProcessors();
+System.out.println(nThreads);
+
+
 Utility method for private field dependency injection
 -----------------------------------------------------
 public static void injectField(Object target, String fieldName, 
@@ -128,7 +134,7 @@ public abstract class RetriedAssert {
 Html, displaying utf-8 characters
 ---------------------------------
 - Put the following at the top of the html pade
-<%@ page contentType=”text/html;charset=UTF-8¨ %>
+<%@ page contentType=â€�text/html;charset=UTF-8Â¨ %>
 
 Stored Procedure-Oracle
 -----------------------
