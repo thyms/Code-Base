@@ -82,9 +82,10 @@ only daemon threads.
 Preemptive, each thread has a certain time-slice to execute.
 Non-Preemptive, thread executes until it finishes its task.
 The chosen thread will run until one of the following conditions is true:
-	a higher priority thread becomes Runnable. (Pre-emptive scheduling)
+	a higher priority thread becomes Runnable. (Pre-emptive scheduling) 
 	it yields, or its run() method exits
 	on systems that support time-slicing, its time allotment has expired
+Thread.MIN_PRIORITY(1), Thread.NORM_PRIORITY(5), Thread.MAX_PRIORITY(10) 
 - In Java, reading and writing a variable is atomic
 Except long and double types, they have to be declared as volatile 
 
@@ -144,6 +145,8 @@ try {
     myThread.sleep(10000);
 } catch (InterruptedException e){
 }
+// Try and see InterruptedException is thrown
+// when myThread is interrupted.
 ----------------------------------------------------
 ----------------------------------------------------
 
@@ -154,6 +157,56 @@ try {
     Thread.currentThread().sleep(10000);
 } catch (InterruptedException e){
 }
+----------------------------------------------------
+----------------------------------------------------
+class LowPriority {
+    public static void main(String[] args) {
+        MyThread t1 = new MyThread(1);
+        MyThread t2 = new MyThread(2);
+        
+        t1.setPriority(Thread.MAX_PRIORITY);
+        t2.setPriority(Thread.MIN_PRIORITY);
+        t1.start();
+        t2.start();
+    }
+}   
+
+class MyThread extends Thread {
+    int id;
+    
+    MyThread(int id) {
+        this.id = id;    
+    }
+    
+    public void run(){
+        for(int i=0; i<10; i++)
+            System.out.println("My id is: " + id);
+    }
+}
+
+----------------------------------------------------
+----------------------------------------------------
+/** Based on example from Sun Thread tutorial */
+// Reentrant lock, which means sync methods can be invoked 
+// in the same class, ones the lock is acquired.
+class Reentrant {
+
+  public synchronized void a() {
+      b();
+      System.out.println("here I am, in a()");
+  }
+  public synchronized void b() {
+      System.out.println("here I am, in b()");
+  }
+}
+
+class TestReentrant {
+    public static void main(String[] args) {
+        Reentrant r = new Reentrant();
+        r.a();
+    }
+}
+
 ----------------------------------------------------
 ----------------------------------------------------
 
