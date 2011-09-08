@@ -1,3 +1,10 @@
+Decimal Formating
+-----------------
+DecimalFormat dfForCredit = new DecimalFormat(Properties.info_message_credit_double_value_format);
+double creditAmountInMinutes = usage.getCreditAmount() / Properties.credit_unit;
+String formattedCreditAmount = dfForCredit.format(creditAmountInMinutes);
+
+
 Getting available processors on computer
 ----------------------------------------
 int nThreads = Runtime.getRuntime().availableProcessors();
