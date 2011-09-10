@@ -1,0 +1,39 @@
+JAVA_OPTS
+---------
+D:\myprogram\
+      |
+      ---> lib\
+            |
+            ---> supportLib.jar
+            ---> anotherSupportLib.jar
+      |
+      ---> org\
+            |
+            --> mypackage\
+                       |
+                       ---> HelloWorld.class
+                       ---> SupportClass.class
+                       ---> UtilClass.class
+>>java -classpath "D:\myprogram;D:\myprogram\lib\supportLib.jar;D:\myprogram\lib\anotherSupportLib.jar" org.mypackage.HelloWorld	// Multiple classpath arguments, use ":" for Linux
+>>java -classpath "D:\myprogram;D:\myprogram\lib\*" org.mypackage.HelloWorld	// Multiple classpath arguments
+*********************************************
+*********************************************
+
+D:\myprogram\
+      |
+      ---> helloWorld.jar 
+      |
+      ---> lib\  
+            |
+            ---> supportLib.jar
+MANIFEST.MF
+	Main-Class: org.mypackage.HelloWorld
+	Class-Path: lib/supportLib.jar lib/supportLib2.jar
+>>java -jar helloWorld.jar			// Running a jar with Main class defined in MANIFEST.MF and classpath is defined in MANIFEST.MF also. 
+									// CLASSPATH environment variable will be ignored, and also the -cp and -classpath switches will be ignored.
+*********************************************
+*********************************************
+
+>>java -Xms256m -Xmx512m -XX:MaxPermSize=256m	org.mypackage.HelloWorld												// Java memory settings
+>>java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044 org.mypackage.HelloWorld					// Remote Debug settings
+>>java -DapplicationBaseDirectory="C:/Base Directory" -DapplicationName="Application Name" org.mypackage.HelloWorld		// Multiple System Properties
