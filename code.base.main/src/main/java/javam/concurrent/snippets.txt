@@ -11,6 +11,7 @@ To Cover
 - Fairness, Starvation & Deadlock
 - Selector???
 - CyclicBarrier
+- CountDownLatch
 - Runnable vs. Callable
 - AutomicInteger, AutomicLong
 
@@ -26,7 +27,6 @@ or any other synchronized method of the object will have to wait until it gets t
   A Thread is the execution stream of the process.
   
 The major difference between threads and processes is 
-
 1.Threads(Light weight Processes) share the address space 
 of the process that created it; processes have their own 
 address
@@ -88,6 +88,7 @@ The chosen thread will run until one of the following conditions is true:
 Thread.MIN_PRIORITY(1), Thread.NORM_PRIORITY(5), Thread.MAX_PRIORITY(10) 
 - In Java, reading and writing a variable is atomic
 Except long and double types, they have to be declared as volatile 
+- while sleeping, the thread still owns synchronization locks it has acquired;
 
 Concurrency:
 - Running several parts of a program or same part in parallel.
@@ -100,6 +101,23 @@ Process:
 - each has different address space for both and data.
 - resources(memory,cpu time) are allocated to it by operating system.
 
+Java Thread Memory Model:
+each program has an area of main memory where it stores it's classes, arrays and variables
+the main memory has a master copy of every variable and contains one lock for each object
+this main memory area is accessible by all the programs threads
+threads can only communicate thru the shared main memory
+each thread has a working memory where it keeps copies of the values of variables it uses or assigns
+to access a shared variable, a thread obtains a lock and flushes its working memory, guaranteeing the shared value will be loaded from main memory
+as a thread executes, it operates on its working copies
+when a synchronized block or method is entered, actions by the thread and main memory must occur in a specific order
+1. the thread obtains a lock on the object and flushes its working copy of the object
+2. main memory reads the objects value from it's master copy
+- the thread loads the value passed by the main memorys read operation
+- the thread uses it's working copy of the object, passing it to it's excuatable engine
+- the thread assigns the resulting value back to it's working copy
+- the thread stores the new value, passing it back to main memory
+3. main memory writes the value passed by the threads store action back to the master copy
+4. the thread releases it's lock on the object
 
 THREAD
 ------
@@ -139,6 +157,113 @@ public class SimpleThread extends Thread {
 ----------------------------------------------------
 
 
+public class RunnableThread implements Runnable {
+  private int countDown = 5;
+  public String toString() {
+    return "#" + Thread.currentThread().getName() +
+      ": " + countDown;
+  }
+  public void run() {
+    while(true) {
+      System.out.println(this);
+      if(--countDown == 0) return;
+    }
+  }
+  public static void main(String[] args) {
+    for(int i = 1; i <= 5; i++)
+      new Thread(new RunnableThread(), "" + i).start();
+    // Output is like SimpleThread.java
+  }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+class MyThread implements Runnable {
+  int count;
+
+  MyThread() {
+    count = 0;
+  }
+  public void run() {
+    System.out.println("MyThread starting.");
+    try {
+      do {
+        Thread.sleep(500);
+        System.out.println("In MyThread, count is " + count);
+        count++;
+      } while (count < 5);
+    } catch (InterruptedException exc) {
+      System.out.println("MyThread interrupted.");
+    }
+    System.out.println("MyThread terminating.");
+  }
+}
+
+class RunnableDemo {
+  public static void main(String args[]) {
+    System.out.println("Main thread starting.");
+    MyThread mt = new MyThread();
+    Thread newThrd = new Thread(mt);
+    newThrd.start();
+    do {
+      System.out.println("In main thread.");
+      try {
+        Thread.sleep(250);
+      } catch (InterruptedException exc) {
+        System.out.println("Main thread interrupted.");
+      }
+    } while (mt.count != 5);
+
+    System.out.println("Main thread ending.");
+  }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+class MyThread extends Thread {
+  int count;
+
+  MyThread() {
+    count = 0;
+  }
+
+  public void run() {
+    System.out.println("MyThread starting.");
+    try {
+      do {
+        Thread.sleep(500);
+        System.out.println("In MyThread, count is " + count);
+        count++;
+      } while (count < 5);
+    } catch (InterruptedException exc) {
+      System.out.println("MyThread interrupted.");
+    }
+    System.out.println("MyThread terminating.");
+  }
+}
+
+public class Main {
+  public static void main(String args[]) {
+    System.out.println("Main thread starting.");
+    MyThread mt = new MyThread();
+    mt.start();
+    do {
+      System.out.println("In main thread.");
+      try {
+        Thread.sleep(250);
+      } catch (InterruptedException exc) {
+        System.out.println("Main thread interrupted.");
+      }
+    } while (mt.count != 5);
+    System.out.println("Main thread ending.");
+  }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
 Thread myThread = new MyThreadClass();
 myThread.start();
 try {
@@ -159,6 +284,8 @@ try {
 }
 ----------------------------------------------------
 ----------------------------------------------------
+
+
 class LowPriority {
     public static void main(String[] args) {
         MyThread t1 = new MyThread(1);
@@ -372,8 +499,6 @@ public class WorkQueue
         }
     }
 }
-
-
 ----------------------------------------------------
 ----------------------------------------------------
 
@@ -571,11 +696,291 @@ public class RunnableExample {
 ----------------------------------------------------
 ----------------------------------------------------
 
+// Yielding
+public class YieldingThread extends Thread {
+
+  private int countDown = 5;
+
+  private static int threadCount = 0;
+
+  public YieldingThread() {
+    super("" + ++threadCount);
+    start();
+  }
+
+  public String toString() {
+    return "#" + getName() + ": " + countDown;
+  }
+
+  public void run() {
+    while (true) {
+      System.out.println(this);
+      if (--countDown == 0)
+        return;
+      yield();
+    }
+  }
+
+  public static void main(String[] args) {
+    for (int i = 0; i < 5; i++)
+      new YieldingThread();
+  }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+// Safe way to stop a thread
+class CanStop extends Thread {
+  // Must be volatile:
+  private volatile boolean stop = false;
+
+  private int counter = 0;
+
+  public void run() {
+    while (!stop && counter < 10000) {
+      System.out.println(counter++);
+    }
+    if (stop)
+      System.out.println("Detected stop");
+  }
+
+  public void requestStop() {
+    stop = true;
+  }
+}
+
+public class Stopping {
+  public static void main(String[] args) {
+    final CanStop stoppable = new CanStop();
+    stoppable.start();
+    new Timer(true).schedule(new TimerTask() {
+      public void run() {
+        System.out.println("Requesting stop");
+        stoppable.requestStop();
+      }
+    }, 500); // run() after 500 milliseconds
+  }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+public class TwoThread extends Thread {
+  private Thread creatorThread;
+
+  public TwoThread() {
+    creatorThread = Thread.currentThread(); // This is the important stuff, rest is normal stuff.
+  }
+
+  public void run() {
+    for ( int i = 0; i < 10; i++ ) {
+      printMsg();
+    }
+  }
+
+  public void printMsg() {
+    Thread t = Thread.currentThread();
+
+    if ( t == creatorThread ) {
+      System.out.println("Creator thread");
+    } else if ( t == this ) {
+      System.out.println("New thread");
+    } else {
+      System.out.println("Unexpected threads!");
+    }
+  }
+
+  public static void main(String[] args) {
+    TwoThread tt = new TwoThread();
+    tt.start();
+
+    for ( int i = 0; i < 10; i++ ) {
+      tt.printMsg();
+    }
+  }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+// Thread leakage handling - uncaughtException!!!
+public class TestOverrideThread implements Runnable {
+
+    static class OverrideExceptionHandler implements Thread.UncaughtExceptionHandler {
+        public void uncaughtException(Thread t, Throwable e) {
+            alertAdministrator(e);
+        }
+    }
+
+    public static void alertAdministrator(Throwable e) {
+        // Use Java Mail to send the administrator's pager an email
+        System.out.println("Adminstrator alert!");
+        e.printStackTrace();
+    }
+
+    public static void main(String[] args) {
+        Thread t = new Thread(new TestOverrideThread());
+        t.setUncaughtExceptionHandler(new OverrideExceptionHandler());
+        System.out.println(t.getUncaughtExceptionHandler());
+        t.start();
+    }
+
+    public void run() {
+        ArrayList al = new ArrayList();
+        while (true) {
+            al.add(new byte[1024]);
+        }
+    }
+}
+----------------------------------------------------
+----------------------------------------------------
+
 
 THREAD GROUP
 ------------
 ThreadGroup myThreadGroup = new ThreadGroup("My Group of Threads");
 Thread myThread = new Thread(myThreadGroup, "a thread for my group");
+----------------------------------------------------
+----------------------------------------------------
+
+
+// Thread leakage handling - uncaughtException!!!
+public class ThreadGroupExample {
+
+    public static class MyThreadGroup extends ThreadGroup {
+
+        public MyThreadGroup(String s) {
+            super(s);
+        }
+
+		@Override
+        public void uncaughtException(Thread thread, Throwable throwable) {
+            System.out.println("Thread " + thread.getName() 
+              + " died, exception was: ");
+            throwable.printStackTrace();
+        }
+    }
+
+    public static ThreadGroup workerThreads = 
+      new MyThreadGroup("Worker Threads");
+
+    public static class WorkerThread extends Thread {
+        public WorkerThread(String s) {
+            super(workerThreads, s);
+        }
+
+        public void run() {
+            throw new RuntimeException();
+        }
+
+    }
+
+    public static void main(String[] args) {
+        Thread t = new WorkerThread("Worker Thread");
+        t.start();
+    }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+// Thread leakage handling - uncaughtException!!!
+public class MainClass implements Runnable {
+
+  static class OverrideThreadGroup extends ThreadGroup {
+    public OverrideThreadGroup() {
+      super("Administrator Alert Group");
+    }
+
+    public void uncaughtException(Thread t, Throwable e) {
+      alertAdministrator(e);
+    }
+  }
+
+  public static void alertAdministrator(Throwable e) {
+    // Use Java Mail to send the administrator's pager an email
+    System.out.println("Adminstrator alert!");
+    e.printStackTrace();
+  }
+
+  public static void main(String[] args) {
+    ThreadGroup tg = new OverrideThreadGroup();
+
+    Thread t = new Thread(tg, new MainClass());
+    t.start();
+  }
+
+  public void run() {
+    ArrayList al = new ArrayList();
+    while (true) {
+      al.add(new byte[1024]);
+    }
+  }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+class MyThread extends Thread {
+  boolean stopped;
+
+  MyThread(ThreadGroup tg, String name) {
+    super(tg, name);
+    stopped = false;
+  }
+
+  public void run() {
+    System.out.println(Thread.currentThread().getName() + " starting.");
+    try {
+      for (int i = 1; i < 1000; i++) {
+        System.out.print(".");
+        Thread.sleep(250);
+        synchronized (this) {
+          if (stopped)
+            break;
+        }
+      }
+    } catch (Exception exc) {
+      System.out.println(Thread.currentThread().getName() + " interrupted.");
+    }
+    System.out.println(Thread.currentThread().getName() + " exiting.");
+  }
+
+  synchronized void myStop() {
+    stopped = true;
+  }
+}
+
+public class Main {
+  public static void main(String args[]) throws Exception {
+    ThreadGroup tg = new ThreadGroup("My Group");
+
+    MyThread thrd = new MyThread(tg, "MyThread #1");
+    MyThread thrd2 = new MyThread(tg, "MyThread #2");
+    MyThread thrd3 = new MyThread(tg, "MyThread #3");
+
+    thrd.start();
+    thrd2.start();
+    thrd3.start();
+
+    Thread.sleep(1000);
+
+    System.out.println(tg.activeCount() + " threads in thread group.");
+
+    Thread thrds[] = new Thread[tg.activeCount()];
+    tg.enumerate(thrds);
+    for (Thread t : thrds)
+      System.out.println(t.getName());
+
+    thrd.myStop();
+
+    Thread.sleep(1000);
+    
+    System.out.println(tg.activeCount() + " threads in tg.");
+    tg.interrupt();
+  }
+}
 ----------------------------------------------------
 ----------------------------------------------------
 
@@ -652,6 +1057,183 @@ public class ThreadJoinDemo {
 ----------------------------------------------------
 
 
+class Sleeper extends Thread {
+	private int duration;
+
+	public Sleeper(String name, int sleepTime) {
+		super(name);
+		duration = sleepTime;
+		start();
+	}
+
+	public void run() {
+		try {
+			sleep(duration);
+		} catch (InterruptedException e) {
+			System.out.println(getName() + " was interrupted. " + "isInterrupted(): " + isInterrupted());
+			return;
+		}
+		System.out.println(getName() + " has awakened");
+	}
+}
+
+class Joiner extends Thread {
+	private Sleeper sleeper;
+
+	public Joiner(String name, Sleeper sleeper) {
+		super(name);
+		this.sleeper = sleeper;
+		start();
+	}
+
+	public void run() {
+		try {
+			sleeper.join();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		System.out.println(getName() + " join completed");
+	}
+}
+
+public class Joining {
+	public static void main(String[] args) {
+		Sleeper sleepy = new Sleeper("Sleepy", 1500), grumpy = new Sleeper("Grumpy", 1500);
+		Joiner dopey = new Joiner("Dopey", sleepy), doc = new Joiner("Doc", grumpy);
+		grumpy.interrupt();
+	}
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+DAEMON THREAD
+-------------
+// Daemon threads spawn other daemon threads
+class Daemon extends Thread {
+  private Thread[] t = new Thread[10];
+
+  public Daemon() {
+    setDaemon(true);
+    start();
+  }
+
+  public void run() {
+    for (int i = 0; i < t.length; i++)
+      t[i] = new DaemonSpawn(i);
+    for (int i = 0; i < t.length; i++)
+      System.out.println("t[" + i + "].isDaemon() = " + t[i].isDaemon());
+    while (true)
+      yield();
+  }
+}
+
+class DaemonSpawn extends Thread {
+  public DaemonSpawn(int i) {
+    start();
+    System.out.println("DaemonSpawn " + i + " started");
+  }
+
+  public void run() {
+    while (true)
+      yield();
+  }
+}
+
+public class Daemons {
+
+  public static void main(String[] args) throws Exception {
+    Thread d = new Daemon();
+    System.out.println("d.isDaemon() = " + d.isDaemon());
+    // Allow the daemon threads to
+    // finish their startup processes:
+    Thread.sleep(1000);
+  }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+// Daemon threads don't prevent the program from ending.
+public class SimpleDaemons extends Thread {
+  public SimpleDaemons() {
+    setDaemon(true); // Must be called before start()
+    start();
+  }
+  public void run() {
+    while(true) {
+      try {
+        sleep(100);
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+      System.out.println(this);
+    }
+  }
+  public static void main(String[] args) {
+    for(int i = 0; i < 10; i++)
+      new SimpleDaemons();
+  }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+THREAD PRIORITY
+---------------
+// Shows the use of thread priorities.
+public class SimplePriorities extends Thread {
+  private int countDown = 5;
+  private volatile double d = 0; // No optimization
+  public SimplePriorities(int priority) {
+    setPriority(priority);
+    start();
+  }
+  public String toString() {
+    return super.toString() + ": " + countDown;
+  }
+  public void run() {
+    while(true) {
+      // An expensive, interruptable operation:
+      for(int i = 1; i < 100000; i++)
+        d = d + (Math.PI + Math.E) / (double)i;
+      System.out.println(this);
+      if(--countDown == 0) return;
+    }
+  }
+  public static void main(String[] args) {
+    new SimplePriorities(Thread.MAX_PRIORITY);
+    for(int i = 0; i < 5; i++)
+      new SimplePriorities(Thread.MIN_PRIORITY);
+  }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+class PriThread extends Thread {
+  PriThread(String name, int pri) {
+    super(name);
+    setPriority(pri);
+    start();
+  }
+
+  public void run() {
+    System.out.println(getPriority());
+  }
+}
+
+public class Main {
+  public static void main(String args[]) throws Exception {
+    PriThread mt2 = new PriThread("Low Priority", Thread.NORM_PRIORITY - 1);
+    PriThread mt1 = new PriThread("High Priority", Thread.NORM_PRIORITY + 1);
+    mt1.join();
+    mt2.join();
+  }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
 IMMUTABLE & DEFENSIVE COPIES
 ----------------------------
 public class MyDataStructure {
@@ -706,6 +1288,28 @@ public class MyRunnable implements Runnable {
 		}
 		System.out.println(sum);
 	}
+}
+----------------------------------------------------
+----------------------------------------------------
+
+Rejected execution handlers and RejectedExecutionException
+while (!shutDownRequested()) {
+  Socket s = null;
+  try {
+    s = ss.accept();
+    exec.execute(new ConnectionRunnable(s));
+  } catch (RejectedExecutionException rej) {
+    try { s.close(); } catch (Exception ignore) {}
+  } catch (Exception e) {
+    // ... log
+  }
+}
+
+
+Another way to handle closing the socket is to pass a RejectedExecutionHandler into the constructor of our ThreadPoolExecutor. 
+RejectedExecutionHandler is an interface that specifies one method that we must define:
+public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+  ...
 }
 ----------------------------------------------------
 ----------------------------------------------------
@@ -860,10 +1464,172 @@ public class SimpleThread extends Thread {
 	}
 
 	public static void main(String[] args) {
-		cyclicBarrier = new CyclicBarrier(5);
+		int numberOfThreads = 5;
+		cyclicBarrier = new CyclicBarrier(numberOfThreads);
 
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < numberOfThreads; i++)
 			new SimpleThread();
+	}
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+CountDownLatch
+--------------
+public class StopLatchedThread extends Thread {
+  private final CountDownLatch stopLatch;
+  
+  public StopLatchedThread(CountDownLatch stopLatch) {
+    this.stopLatch = stopLatch;
+  }
+  public void run() {
+    try {
+      // perform interesting task
+    } finally {
+      stopLatch.countDown();
+    }
+  }
+}
+
+public class Deneme {
+	public static void main(String[] args)  throws InterruptedException {
+	  CountDownLatch cdl = new CountDownLatch(10);
+	  for (int i = 0; i < 10; i++) {
+	    Thread t = new StopLatchedThread(cdl);
+	    t.start();
+	  }
+	  cdl.await();
+	}
+}
+----------------------------------------------------
+----------------------------------------------------
+
+// Starting threads at the same time
+// Useful when you don't know for how many threads to wait
+// If you know the number of threads use CyclicBarrier
+public class LatchedThread extends Thread {
+  private final CountDownLatch startLatch;
+
+  public LatchedThread(CountDownLatch startLatch) {
+    this.startLatch = startLatch;
+  }
+  public void run() {
+    try {
+      startLatch.await();
+      // ... perform task
+    } catch (InterruptedException iex) {}
+  }
+}
+
+
+CountDownLatch startLatch = new CountDownLatch(1);
+for (int threadNo = 0; threadNo < 4; threadNo++) {
+  Thread t = new LatchedThread(startLatch);
+  t.start();
+}
+// give the threads chance to start up; we could perform
+// initialisation code here as well.
+Thread.sleep(200);
+startLatch.countDown();
+----------------------------------------------------
+----------------------------------------------------
+
+
+TIMER & TIMERTASK
+-----------------
+// One time scheduled
+public class Reminder {
+  Timer timer;
+
+  public Reminder(int seconds) {
+    timer = new Timer();
+    timer.schedule(new RemindTask(), seconds * 1000);
+  }
+
+  class RemindTask extends TimerTask {
+    public void run() {
+      System.out.println("Time's up!");
+      timer.cancel(); //Terminate the timer thread
+    }
+  }
+
+  public static void main(String args[]) {
+    System.out.println("About to schedule task.");
+    new Reminder(5);
+    System.out.println("Task scheduled.");
+  }
+}
+
+// Repeated and with a delay time to start
+public class Reminder {
+	Timer timer;
+
+	public Reminder(int seconds) {
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new RemindTask(), 1000, seconds * 1000);
+	}
+
+	class RemindTask extends TimerTask {
+		public void run() {
+			System.out.println("Working");
+		}
+	}
+
+	public static void main(String args[]) {
+		System.out.println("About to schedule task.");
+		new Reminder(5);
+		System.out.println("Task scheduled.");
+	}
+}
+
+
+// Repeated and with a fixed date start
+public class Reminder {
+	Timer timer;
+
+	public Reminder(int seconds) {
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new RemindTask(), DateUtils.addSeconds(new Date(), 1), seconds * 1000);
+	}
+
+	class RemindTask extends TimerTask {
+		public void run() {
+			System.out.println("Working");
+		}
+	}
+
+	public static void main(String args[]) {
+		System.out.println("About to schedule task.");
+		new Reminder(5);
+		System.out.println("Task scheduled.");
+	}
+}
+----------------------------------------------------
+----------------------------------------------------
+
+// Samething is done with thread pool, better approach
+public class ScheduleTester {
+	public static void main(String[] args) {
+		// Get the scheduler
+		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
+
+		// Get a handle, starting now, with a 10 second delay
+		final ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(new TimePrinter(System.out), 0, 10, TimeUnit.SECONDS);
+		
+		// You can sth with scheduledFuture
+	}
+}
+
+class TimePrinter implements Runnable {
+	private PrintStream out;
+
+	public TimePrinter(PrintStream out) {
+		this.out = out;
+	}
+
+	public void run() {
+		out.printf("Current time: %tr%n", new Date());
 	}
 }
 ----------------------------------------------------

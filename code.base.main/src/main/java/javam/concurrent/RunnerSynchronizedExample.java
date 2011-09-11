@@ -62,7 +62,7 @@ public class RunnerSynchronizedExample {
 		public synchronized void put(int value) {
 			try {
 				System.out.println("Producer is putting...");
-				Thread.currentThread().sleep(TimeUnit.SECONDS.toMillis(2));
+				Thread.sleep(TimeUnit.SECONDS.toMillis(2));
 				this.value = value;
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

@@ -1,27 +1,73 @@
-MyThread t1 = new MyThread(1);
-MyThread t2 = new MyThread(2);
 
-t1.setPriority(Thread.NORM_PRIORITY);
-t2.setPriority(Thread.NORM_PRIORITY);   // won't yield() for lower priority
-t1.start();
-t2.start();
-		
-class MyThread extends Thread {
-	int id;
-	
-	MyThread(int id) {
-		this.id = id;
-	}
-	
-	public synchronized void run(){
-		for(int i=0; i<100; i++) {
-			if( id==1 && i==30 ) {
-					yield();
-			}
-			System.out.println("My id is: " + id);
-		}
-	}
-}
+//public class Deneme {
+//	private static class SimpleThread extends Thread {
+//		private final CyclicBarrier cyclicBarrier;
+//		private int count = 5;
+//
+//		public SimpleThread(int i, CyclicBarrier cyclicBarrier) {
+//			this.cyclicBarrier = cyclicBarrier;
+//			setName(String.valueOf(i));
+//		}
+//
+//		@Override
+//		public void run() {
+//			try {
+//				cyclicBarrier.await();
+//				do {
+//					System.out.println(getName() + ": count is " + count);
+//				} while (--count  != 0);
+//				System.out.println(getName() + ": is done working...");
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			} catch (BrokenBarrierException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
+//
+//	public static void main(String[] args) {
+//		int numberOfThreads = 10;
+//		CyclicBarrier cyclicBarrier = new CyclicBarrier(numberOfThreads, new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				System.out.println("All Threads are ready to start");
+//			}
+//		});
+//		
+//		for (int i = 0; i < numberOfThreads; i++) {
+//			SimpleThread simpleThread = new SimpleThread(i, cyclicBarrier);
+//			simpleThread.start();
+//		}
+//		
+//		System.out.println(Thread.currentThread().getName() + ": Main thread is done");
+//	}
+//}
+
+//MyThread t1 = new MyThread(1);
+//MyThread t2 = new MyThread(2);
+//
+//t1.setPriority(Thread.NORM_PRIORITY);
+//t2.setPriority(Thread.NORM_PRIORITY);   // won't yield() for lower priority
+//t1.start();
+//t2.start();
+//		
+//class MyThread extends Thread {
+//	int id;
+//	
+//	MyThread(int id) {
+//		this.id = id;
+//	}
+//	
+//	public synchronized void run(){
+//		for(int i=0; i<100; i++) {
+//			if( id==1 && i==30 ) {
+//					yield();
+//			}
+//			System.out.println("My id is: " + id);
+//		}
+//	}
+//}
 
 //StackClass stack = new StackClass(5);
 //new StackPusher("One", stack);
