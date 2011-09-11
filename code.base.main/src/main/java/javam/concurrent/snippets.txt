@@ -837,6 +837,127 @@ public class TestOverrideThread implements Runnable {
 ----------------------------------------------------
 
 
+// Determining If the Current Thread Is Holding a Synchronized Lock
+public synchronized void myMethod() {
+    boolean hasLock = false;
+    Object o = new Object();
+
+    // Determine if current thread has lock for o
+    hasLock = Thread.holdsLock(o);     // false
+    synchronized (o) {
+        hasLock = Thread.holdsLock(o); // true
+    }
+
+    // Check if current thread has lock for current object
+    hasLock = Thread.holdsLock(this);  // true
+}
+----------------------------------------------------
+----------------------------------------------------
+
+// Implementing an Unbounded Work Queue
+// Create the work queue
+WorkQueue queue = new WorkQueue();
+
+// Create a set of worker threads
+final int numWorkers = 2;
+Worker[] workers = new Worker[numWorkers];
+for (int i=0; i<workers.length; i++) {
+    workers[i] = new Worker(queue);
+    workers[i].start();
+}
+
+// Add some work to the queue; block if the queue is full.
+// Note that null cannot be added to a blocking queue.
+for (int i=0; i<100; i++) {
+    queue.addWork(i);
+}
+
+// Add special end-of-stream markers to terminate the workers
+for (int i=0; i<workers.length; i++) {
+    queue.addWork(Worker.NO_MORE_WORK);
+}
+
+
+public class WorkQueue {
+    LinkedList queue = new LinkedList();
+
+    // Add work to the work queue
+    public synchronized void addWork(Object o) {
+        queue.addLast(o);
+        notify();
+    }
+
+    // Retrieve work from the work queue; block if the queue is empty
+    public synchronized Object getWork() throws InterruptedException {
+        while (queue.isEmpty()) {
+            wait();
+        }
+        return queue.removeFirst();
+    }
+}
+
+
+class Worker extends Thread {
+    // Special end-of-stream marker. If a worker retrieves
+    // an Integer that equals this marker, the worker will terminate.
+    static final Object NO_MORE_WORK = new Object();
+
+    WorkQueue q;
+
+    Worker(WorkQueue q) {
+        this.q = q;
+    }
+    public void run() {
+        try {
+            while (true) {
+                // Retrieve some work; block if the queue is empty
+                Object x = q.getWork();
+
+                // Terminate if the end-of-stream marker was retrieved
+                if (x == NO_MORE_WORK) {
+                    break;
+                }
+
+                // Compute the square of x
+                int y = ((Integer)x).intValue() * ((Integer)x).intValue();
+            }
+        } catch (InterruptedException e) {
+        }
+    }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+// Stopping a Thread
+MyThread thread = new MyThread();
+thread.start();
+
+// Do work...
+
+// Stop the thread
+thread.allDone = true;
+
+class MyThread extends Thread {
+    boolean allDone = false;
+
+    // This method is called when the thread runs
+    public void run() {
+        while (true) {
+            // Do work...
+
+            if (allDone) {
+                return;
+            }
+
+            // Do work...
+        }
+    }
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
 THREAD GROUP
 ------------
 ThreadGroup myThreadGroup = new ThreadGroup("My Group of Threads");
@@ -1102,6 +1223,44 @@ public class Joining {
 		Joiner dopey = new Joiner("Dopey", sleepy), doc = new Joiner("Doc", grumpy);
 		grumpy.interrupt();
 	}
+}
+----------------------------------------------------
+----------------------------------------------------
+
+
+// Determining When a Thread Has Finished
+// Create and start a thread
+Thread thread = new MyThread();
+thread.start();
+
+// Check if the thread has finished in a non-blocking way
+if (thread.isAlive()) {
+    // Thread has not finished
+} else {
+    // Finished
+}
+
+// Wait for the thread to finish but don't wait longer than a
+// specified time
+long delayMillis = 5000; // 5 seconds
+try {
+    thread.join(delayMillis);
+
+    if (thread.isAlive()) {
+        // Timeout occurred; thread has not finished
+    } else {
+        // Finished
+    }
+} catch (InterruptedException e) {
+    // Thread was interrupted
+}
+
+// Wait indefinitely for the thread to finish
+try {
+    thread.join();
+    // Finished
+} catch (InterruptedException e) {
+    // Thread was interrupted
 }
 ----------------------------------------------------
 ----------------------------------------------------

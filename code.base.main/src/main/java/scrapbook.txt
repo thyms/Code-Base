@@ -1,3 +1,26 @@
+// Getting the Stack Trace of an Exception
+try {
+    // My code
+} catch (Throwable e) {
+    // Get the stack trace
+    StackTraceElement stack[] = e.getStackTrace();
+
+    // stack[0] contains the method that created the exception.
+    // stack[stack.length-1] contains the oldest method call.
+    // Enumerate each stack element.
+    for (int i=0; i<stack.length; i++) {
+        String filename = stack[i].getFileName();
+        if (filename == null) {
+            // The source filename is not available
+        }
+        String className = stack[i].getClassName();
+        String methodName = stack[i].getMethodName();
+        boolean isNativeMethod = stack[i].isNativeMethod();
+        int line = stack[i].getLineNumber();
+    }
+}
+
+
 Producer-Consumer with BlockingQueue
 ------------------------------------
 class Producer implements Runnable {
