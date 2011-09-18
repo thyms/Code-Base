@@ -1,4 +1,210 @@
-// Getting the Stack Trace of an Exception
+Multi-Catch Statement
+---------------------
+public class MultiCatchDemo {
+    public static void main(String[] args) {
+        MultiCatchDemo demo = new MultiCatchDemo();
+        try {
+            demo.callA();
+            demo.callB();
+            demo.callC();
+        } catch (IOException | SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void callA() throws IOException {
+        throw new IOException("IOException");
+    }
+
+    private void callB() throws SQLException {
+        throw new SQLException("SQLException");
+    }
+
+    private void callC() throws ClassNotFoundException {
+        throw new ClassNotFoundException("ClassNotFoundException");
+    }
+}
+
+
+
+Executing external command and obtaining result
+-----------------------------------------------
+public class ProcessResult {
+    public static void main(String[] args) {
+        try {
+            Process process = Runtime.getRuntime().exec("ls -al");
+
+            process.waitFor();
+            
+            int exitValue = process.exitValue();
+            System.out.println("exitValue = " + exitValue);
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+Getting Environment Variables
+-----------------------------
+public class SystemEnv
+{
+    public static void main(String[] args)
+    {
+        // We get the environment information from the System class. 
+        // The getenv method (why shouldn't it called getEnv()?) 
+        // returns a map that will never have null keys or values 
+        // returned.
+        Map map = System.getenv();
+ 
+        // For this purpose of example we will interate the keys and 
+        // values in it so we create an iterator object from it.
+        Set keys = map.keySet();
+        Iterator iterator = keys.iterator();
+        while (iterator.hasNext())
+        {
+            // Here we iterate based on the keys inside the map, and 
+            // with the key in hand we can get it values.
+            String key = (String) iterator.next();
+            String value = (String) map.get(key);
+ 
+            System.out.println(key + " = " + value);
+        }
+    }
+}
+
+
+
+Adding leading zero to a number
+-------------------------------
+public class LeadingZerosExample {
+    public static void main(String[] args) {
+        int number = 1500;
+        
+        //
+        // String format below will add leading zeros (the %0 syntax) 
+        // to the number above. The length of the formatted string will 
+        // be 7 characters.
+        //
+        String formatted = String.format("%07d", number);
+        
+        System.out.println("Number with leading zeros: " + formatted);
+    }
+}
+
+
+
+Getting name of currently executed method
+-----------------------------------------
+public class GetCurrentMethodName {
+    public static void main(String[] args) {
+        //
+        // Get the current executing method name
+        //
+        String methodName =
+                Thread.currentThread().getStackTrace()[1].getMethodName();
+        System.out.println("methodName = " + methodName);
+
+        GetCurrentMethodName obj = new GetCurrentMethodName();
+        obj.executeAMethod();
+    }
+
+    private void executeAMethod() {
+        //
+        // Get the current executing method name
+        //
+        String methodName =
+                Thread.currentThread().getStackTrace()[1].getMethodName();
+        System.out.println("methodName = " + methodName);
+    }
+}
+Output:
+methodName = main
+methodName = executeAMethod
+
+
+
+
+ReentrantLock
+-------------
+public class LockExample {
+    public static void main(String[] args) throws Exception {
+	Counter counter = new Counter();
+	Thread t1 = new Thread(new Worker(counter, true, 10000));
+	t1.start();
+	Thread t2 = new Thread(new Worker(counter, false, 10000));
+	t2.start();
+
+	t1.join();
+	t2.join();
+	System.out.println("Final count: " + counter.getCount());
+    }
+}
+
+class Counter {
+    private int count;
+    private Lock lock = new ReentrantLock();
+
+    public void increment() {
+	try {
+	    lock.lock();
+	    count++;
+	}
+	finally {
+	    lock.unlock();
+	}
+    }
+
+    public void decrement() {
+	try {
+	    lock.lock();
+	    count--;
+	}
+	finally {
+	    lock.unlock();
+	}
+    }
+
+    public int getCount() {
+	return count;
+    }
+}
+
+class Worker implements Runnable {
+    private Counter counter;
+    private boolean increment;
+    private int count;
+
+    public Worker(Counter counter, boolean increment, int count) {
+	this.counter = counter;
+	this.increment = increment;
+	this.count = count;
+    }
+
+    public void run() {
+	for (int i = 0; i < this.count; i++) {
+	    if (increment) {
+		this.counter.increment();
+	    }
+	    else {
+		this.counter.decrement();
+	    }
+	}
+    }
+}
+
+
+Getting the Stack Trace of an Exception
+---------------------------------------
 try {
     // My code
 } catch (Throwable e) {

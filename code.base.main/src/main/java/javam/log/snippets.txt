@@ -1,19 +1,5 @@
 Extended Logger template
 ------------------------
-package com.oksijen.services.voiceroamingpacks.common;
-
-import org.apache.log4j.Logger;
-
-import com.oksijen.sdf.common.service.SDFClassType;
-import com.oksijen.sdf.common.service.impl.ClassDescription;
-import com.oksijen.services.common.utility.v01_00_16.logger.MessageFormatter;
-import com.oksijen.services.common.utility.v01_00_16.logger.impl.SdfServiceLogger;
-
-/**
- * @author dkalfa
- *
- */
-@ClassDescription(type = SDFClassType.USED_CLASS, version = "1.0.0", short_description = "short VrpServiceLogger", long_description = "long VrpServiceLogger")
 public class VrpServiceLogger extends SdfServiceLogger {
     
     public VrpServiceLogger(String projectName, Logger logger, String sdfLogTraceId) {
