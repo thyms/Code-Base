@@ -6,7 +6,6 @@
 		<groupId>org.dk</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>org.dk</groupId>
 	<artifactId>code.base.main</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
