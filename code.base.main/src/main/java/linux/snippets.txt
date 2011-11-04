@@ -2,6 +2,11 @@ $mkdir newDirectory
 $rm -f anyFile.txt
 $rm -rf anyFolder
 
+Making a file executable
+------------------------
+$chmod +x example.exe
+
+
 IP-Domain Name mapping in Linux
 -------------------------------
 modify /etc/hosts file.
