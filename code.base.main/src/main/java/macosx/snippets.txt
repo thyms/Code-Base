@@ -1,0 +1,17 @@
+Initial Setup Scripts for Mac OS X
+----------------------------------
+-> Go to link below and follow the instructions. 
+-> Also, there is a dotfile package that has the copies of the files.
+https://github.com/mathiasbynens/dotfiles 
+
+
+Separator for Terminal
+----------------------
+-> Add following lines in terminal_separator.txt" to your ~/.bash_profile
+
+
+Finding files
+-------------
+$locate my.conf
+update index database for 'locate'
+$sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist
