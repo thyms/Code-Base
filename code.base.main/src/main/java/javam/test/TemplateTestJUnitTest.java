@@ -10,7 +10,7 @@ import org.junit.Test;
  * @author Deniz KALFA
  *
  */
-public class TemplateTestJUnit {
+public class TemplateTestJUnitTest {
 	@BeforeClass public static void oneTimeSetUp() {}
 	
 	@AfterClass public static void oneTimeTearDown() {}
