@@ -66,7 +66,9 @@ $echo [Alt+1] [Alt+Ctrl+y] -> echo a
 Zip, Unzip using gzip/gunzip and tar
 ------------------------------------
 -> Extracting
-$tar -zxvf extractme.tar.gz
+$tar xvzf file.tar.gz		# for a gzip
+$tar xvjf file-1.0.tar.bz2  # for a bzip2
+$tar xvf  file-1.0.tar      # for a tar
 -> Creating an archive
 $tar czvf myfolder.tar.gz abcfolder/
 -> Unzipping
