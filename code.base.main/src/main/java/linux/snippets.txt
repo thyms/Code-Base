@@ -1,11 +1,116 @@
-$mkdir newDirectory
-$rm -f anyFile.txt
-$rm -rf anyFolder
+Shell Commands
+--------------
+man	                     - format and display the on-line manual pages
+env	                     - set and print environment
+mkdir           	     - make directories
+touch	                 - change file access and modification times
+rm				         - remove directory entries
+rmdir	                 - remove directories
+chmod	                 - change file modes or Access Control Lists
+ps	                     - process status(ps aux)
+whatis					 - search the whatis database for complete words.
+apropos					 - search the whatis database for strings
+whereis					 -  locate the binary, source, and manual page files for a command
+which					 - locate a command
+locate	                 - find filenames quickly
+locate.updatedb	         - update locate database(/usr/libexec/locate.updatedb)
+find	                 - walk a file hierarchy
+tar	                     - Tar file creation, extraction & manipulation
+shutdown	             - close down the system at a given time
+kill                     - terminate or signal a process
+w	                     - display who is logged in and what they are doing
+finger	                 - user information lookup program
+df	                     - display free disk space
+du   	                 - display disk usage statistics
+ln			             - make links(ln -s for soft link. hard link effects the original file, delete hard link and original file is gone)
+tail                     - display the last part of a file
+pwd	                     - return working directory name
+fdisk	                 - DOS partition maintenance program
+uname	                 - Print operating system name
+sw_vers	                 - print Mac OS X operating system version information
+uptime	                 - show how long system has been running
+col	                     - filter reverse line feeds from input
+wget(1)                  - The non-interactive network downloader
+!!						 - executes the last command in history(sudo !!)
+!1						 - executes the 1th command in history
+!-1						 - executes the 1th command in history before the current one
+!cat					 - executes the last command that starts with 'cat'
+!cat:p					 - prints the last command that starts with 'cat'
+cd !$					 - gives the last argument in previous command. Say you ran 'mkdir xxx' command, this will run 'cd xxx' command.
+cd -					 - goes to last working directory
+
+
+Terminal Shortcuts
+------------------
+Esc +f: One word forward
+Esc +b: One word backward
+Ctrl+a: home
+Ctrl+e: end
+Ctrl+u: Clears from cursor to beginning
+Ctrl+k: Clears from cursor to end
+Ctrl+w: Deletes one word backward
+Esc +d: Deletes one word forward
+Ctrl+r: Search through cammand history
+
+
+Using {} operators
+------------------
+mkdir myfolder{1,2,3}		- Creates myfolder1, myfolder2, myfolder3
+mv /path/to/file.{txt,xml}	- Renames
+sudo cp /etc/rc.conf{,-old}	- Backups
+sudo mv /etc/rc.conf{-old,}	- Restores
+
+
+Functions
+---------
+cd and ls
+---------
+function cdl { cd $1; ls;}
+---------------------------
+
+
+Finding a text in files
+-----------------------
+$grep -ir "aaaa" *.txt
+
+Looping over a set of files
+---------------------------
+$for f in *.txt;do echo $f;done
+
+Finding files
+-------------
+$find . –name "*.txt" –mtime 5
+$find /home -iname '*.mpg' -o -iname '*.avi'	# ignore case, .mpg and .avi files
+
+#Mind the use of '{}' and  \; (there is a space before \;). '{}' matches the file that was found, while  \; terminate the exec statement.
+$find /home/ -name '*.avi' -a -size +700M -mtime -15 -exec mv '{}' /my/new/movies/ \;	
+
+Piping and redirecting
+----------------------
+$cat filename.list | grep keyword > filefound.list
 
 Making a file executable
 ------------------------
 $chmod +x example.exe
 
+Finding the most used commands from history
+-------------------------------------------
+$history|awk '{print $2}'|awk 'BEGIN {FS="|"} {print $1}'|sort|uniq -c|sort -r
+
+
+Finding and Running a command from history
+------------------------------------------
+$history | grep nano
+381 sudo nano /etc/NetworkManager/nm-system-settings.conf
+387 sudo nano /etc/rc.conf
+388 sudo nano /etc/rc.conf
+455 sudo nano /boot/grub/menu.lst
+$!455
+
+Substituting string and running the last command
+------------------------------------------------
+$nanp xxx.txt
+$^nanp^nano
 
 IP-Domain Name mapping in Linux
 -------------------------------
@@ -14,6 +119,16 @@ modify /etc/hosts file.
 Finding specific processes
 --------------------------
 $ps -ef | grep java
+
+whatis Command
+--------------
+whatis - search the whatis database for complete words.
+$whatis man
+
+apropos Command
+---------------
+apropos - search the whatis database for strings
+$apropos man
 
 whereis Command
 ---------------
