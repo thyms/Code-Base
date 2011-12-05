@@ -30,7 +30,7 @@ uname	                 - Print operating system name
 sw_vers	                 - print Mac OS X operating system version information
 uptime	                 - show how long system has been running
 col	                     - filter reverse line feeds from input
-wget(1)                  - The non-interactive network downloader
+wget                     - The non-interactive network downloader
 !!						 - executes the last command in history(sudo !!)
 !1						 - executes the 1th command in history
 !-1						 - executes the 1th command in history before the current one
