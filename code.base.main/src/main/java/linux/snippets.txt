@@ -31,6 +31,7 @@ sw_vers	                 - print Mac OS X operating system version information
 uptime	                 - show how long system has been running
 col	                     - filter reverse line feeds from input
 wget                     - The non-interactive network downloader
+wc	                     - word, line, character, and byte count
 !!						 - executes the last command in history(sudo !!)
 !1						 - executes the 1th command in history
 !-1						 - executes the 1th command in history before the current one
