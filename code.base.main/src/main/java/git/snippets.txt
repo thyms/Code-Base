@@ -1,3 +1,37 @@
+- git init
+- git clone git://github.com/schacon/simplegit.git
+- git status [-s]
+- git add <fileName>
+- git diff			# between working directory and staging
+- git diff --cached	# between staging and commit
+- git diff HEAD		# between working, staging and commit
+- git diff --stat	# summarizes diff information
+- git commit -m 'my great changes'
+- git commit -am 'my greatest changes' # adds and commits already tracked files
+- git reset HEAD -- <fileName>	# unstages the given file
+- git branch	# lists local branches
+- git branch <branchName>		# creates branch
+- git checkout <branchName>		# switches to branch
+- git checkout -b <branchName>	# creates and switches to branch 
+- git branch -d <branchName>	# delete branch
+- git merge removals	# merges removals into current(e.g. master) branch
+- git log				# shows commit messages
+- git log --oneline		# shows commit messages per line
+- git log --oneline --graph [branchName] # shows commit messages per line with merge graph
+- git log --oneline [branchName] [^otherBranchName]	# shows commit messages per line with merge graph
+- git tag -a v1.0
+- git log --oneline --decorate --graph
+- git tag -a v0.9 69763bf	# tags a previous commit
+- git remote [-v]	# lists the remote repositories
+- git remote add origin git@github.com:schacon/hw.git	# adds a remote repo url with 'origin' alias
+- git remote rm origin	# removes the 'origin' alias
+- 
+
+- git config --global user.name 'Your Name'
+- git config --global user.email your@email.com
+- git config --global alias.unstage "reset HEAD" # git unstage [fileName]
+
+
 Git and EGit Setup
 ------------------
 - Follow the instructions at http://help.github.com/win-set-up-git/
